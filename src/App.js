@@ -11,6 +11,7 @@ import SharedPhoto from './images/map.png'
 import OurPhoto from './images/Karta.webp'
 import Palette from './components/Palette.js';
 import ButtonAndForm from './components/ButtonAndForm.js';
+import Timetable from './components/Timetable.js';
 
 class App extends React.Component {
     render() {
@@ -39,14 +40,16 @@ class App extends React.Component {
                 <RepeatText repeatText={<>Ваше присутствие в день нашей свадьбы - самый значимый подарок для нас! Мы понимаем, что дарить цветы на свадьбу - это традиция, но мы не сможем насладиться их красотой в полной мере... Будем рады любой другой альтернативе (вино или в денежном эквиваленте).</>} />
                 <RepeatText titleRepeatText="Примечание" />
                 <RepeatText repeatText={<>Будем благодарны, если вы воздержитесь от криков "Горько" на празднике, ведь поцелуй — это знак выражения чувств, он не может быть по заказу.</>} />
-                <RepeatText titleRepeatText="Подтверждение" />
-                <RepeatText repeatText={<>Пожалуйста подтвердите свое присутствие до 01.01.2025почтения или диетические ограничения. После подтверждения вы сможете пройти опрос о своих вкусовых предпочтениях и напитках.</>} />
                 <DearGuest dearGuest="Ждем Вас на свадьбе!" />
                 <RepeatText repeatText={<>Будем благодарны, если при выборе нарядов на наше торжество вы придержитесь следующей палитры.</>} />
-                <Palette/>
-                <ButtonAndForm/>
+                <Palette />
+                <Timetable/>
+                <RepeatText titleRepeatText="Подтверждение" />
+                <RepeatText repeatText={<>Пожалуйста подтвердите свое присутствие до 01.01.2025</>} />
+                <ButtonAndForm />
 
             </div>
+
         </div>)
     }
 }

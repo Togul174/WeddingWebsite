@@ -24,6 +24,7 @@
 .main {
     background-color: #31635c;
     color: black;
+    padding-bottom: 5rem;
 }
 
 /* ------------ First Page -------------- */
@@ -138,7 +139,8 @@
     margin-top: 5rem;
     background-color: antiquewhite;
     margin-inline: auto;
-    padding-top: 5rem;
+    padding: 4rem 0;
+    text-align: center;
 }
 
 .dearGuest {
@@ -163,11 +165,12 @@
 
 .titleRepeatText {
     width: 60%;
-    margin: 1rem auto 1rem auto;
+    margin: 1rem auto;
     text-align: center;
     line-height: 2rem;
     font-size: 1.5rem;
     text-transform: uppercase;
+    font-weight: 500;
 }
 
 .sharedPhoto {
@@ -192,7 +195,7 @@
 .colorScheme {
     display: flex;
     justify-content: center;
-    height: 20vh;
+    height: auto;
     max-width: 50%;
     text-align: center;
     margin: 0 auto;
@@ -225,4 +228,104 @@
 
 .color5 {
     background-color: #e5ff00;
+}
+
+.timetable {
+    width: 80%;
+    text-align: center;
+    margin: 6rem auto;
+    padding: 1.5rem 0;
+    background-color: #fff;
+
+}
+
+.wedTimetable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: auto;
+    margin: 6rem 0;
+
+    font-size: 9rem;
+    font-family: 'WonderGardenScript-Regular';
+    line-height: 4rem;
+    font-weight: normal;
+}
+
+.elTimetable {
+    display: flex;
+    justify-content: start;
+    margin: 4rem 2rem;
+}
+
+.timeOfTable {
+    font-size: 1.5rem;
+    margin: .5rem 2rem;
+    font-weight: bold;
+}
+
+.inviteOfTable h2 {
+    font-size: 1.4rem;
+}
+
+.inviteOfTable div {
+    font-size: 1.3rem;
+}
+
+.confirmationButton {
+    height: 5vh;
+    width: 40%;
+    text-align: center;
+    margin: 5rem auto;
+
+    border-radius: 1rem;
+    font-size: 2rem;
+    background-color: #f00000;
+}
+
+.confirmationButton:hover {
+    background-color: rgb(235, 176, 232);
+    transition: .5s;
+}
+
+.formBackground {
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+    background-color: #fff;
+}
+
+.form {
+    width: 60%;
+    margin: 0 auto;
+    text-align: start;
+    padding: 2rem 0;
+}
+
+.form h3 {
+    font-size: 1.4rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.form form {
+    font-size: 1.4rem;
+}
+
+.serverButton {
+    height: 5vh;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 2rem auto;
+    border-radius: 1rem;
+    font-size: 1.5rem;
+    background-color: #f00000;
+}
+
+.serverButton:hover {
+    background-color: rgb(235, 176, 232);
+    transition: .5s;
 }
