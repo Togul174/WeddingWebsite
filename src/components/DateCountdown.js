@@ -12,7 +12,7 @@ class DateCountdown extends React.Component {
       finished: false,
     };
 
-    this.targetDate = new Date('2026-08-25T00:00:00');
+    this.targetDate = new Date('2026-08-25T17:00:00');
   }
 
   componentDidMount() {

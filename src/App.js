@@ -12,6 +12,7 @@ import OurPhoto from './images/Karta.webp'
 import Palette from './components/Palette.js';
 import ButtonAndForm from './components/ButtonAndForm.js';
 import Timetable from './components/Timetable.js';
+import YandexMapClass from './components/YandexMap.js';
 
 class App extends React.Component {
     render() {
@@ -43,7 +44,11 @@ class App extends React.Component {
                 <DearGuest dearGuest="Ждем Вас на свадьбе!" />
                 <RepeatText repeatText={<>Будем благодарны, если при выборе нарядов на наше торжество вы придержитесь следующей палитры.</>} />
                 <Palette />
-                <Timetable/>
+                <Timetable />
+                <RepeatText titleRepeatText="Зал бракосочетания" />
+                <YandexMapClass coords={[59.93396, 30.293878]} />
+                <RepeatText titleRepeatText="Банкетный зал" />
+                <YandexMapClass coords={[59.95959, 30.414220]} />
                 <RepeatText titleRepeatText="Подтверждение" />
                 <RepeatText repeatText={<>Пожалуйста подтвердите свое присутствие до 01.01.2025</>} />
                 <ButtonAndForm />

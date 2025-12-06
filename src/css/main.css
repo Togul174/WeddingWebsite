@@ -22,7 +22,7 @@
 }
 
 .main {
-    background-color: #31635c;
+    background-color: #ceb9ad;
     color: black;
     padding-bottom: 5rem;
 }
@@ -62,7 +62,7 @@
     justify-content: center;
     align-items: center;
 
-    color: #e786ab;
+    color: #8b1222;
     font-size: 8rem;
     font-weight: 100;
     letter-spacing: 0.3rem;
@@ -78,7 +78,7 @@
     line-height: 7rem;
     font-family: 'WonderGardenScript-Regular';
     text-transform: none;
-
+    color: #4B3327;
 }
 
 .ourName p {
@@ -87,6 +87,7 @@
     right: 5.5rem;
     font-size: 12rem;
     font-family: 'WonderGardenScript-Regular';
+    color: #4B3327;
 }
 
 .footer {
@@ -137,7 +138,7 @@
 .mainDiscrPage {
     width: 50%;
     margin-top: 5rem;
-    background-color: antiquewhite;
+    background-color: #e0cecd;
     margin-inline: auto;
     padding: 4rem 0;
     text-align: center;
@@ -199,7 +200,6 @@
     max-width: 50%;
     text-align: center;
     margin: 0 auto;
-
 }
 
 .colorScheme div {
@@ -211,23 +211,23 @@
 }
 
 .color1 {
-    background-color: #40c916;
+    background-color: #4B3327;
 }
 
 .color2 {
-    background-color: #9586e7;
+    background-color: #75523F;
 }
 
 .color3 {
-    background-color: #0affde;
+    background-color: #C29995;
 }
 
 .color4 {
-    background-color: #f00000;
+    background-color: #ECC9C7;
 }
 
 .color5 {
-    background-color: #e5ff00;
+    background-color: rgb(255, 237, 212);
 }
 
 .timetable {
@@ -235,7 +235,7 @@
     text-align: center;
     margin: 6rem auto;
     padding: 1.5rem 0;
-    background-color: #fff;
+    background-color: rgb(255, 237, 212);
 
 }
 
@@ -260,8 +260,8 @@
 }
 
 .timeOfTable {
-    font-size: 1.5rem;
-    margin: .5rem 2rem;
+    font-size: 1.7rem;
+    margin: 2rem;
     font-weight: bold;
 }
 
@@ -271,6 +271,12 @@
 
 .inviteOfTable div {
     font-size: 1.3rem;
+}
+
+.yandexMap {
+    width: 80%;
+    height: 40vh;
+    margin: 2rem auto 4rem auto;
 }
 
 .confirmationButton {
@@ -293,7 +299,7 @@
     width: 80%;
     text-align: center;
     margin: 0 auto;
-    background-color: #fff;
+    background-color: rgb(255, 237, 212);
 }
 
 .form {
