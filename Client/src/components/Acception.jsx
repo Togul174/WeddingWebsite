@@ -5,7 +5,7 @@ class Acception extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFormEnabled: false,
+      isFormEnabled: true,
       userName: '',
       hotDish: '',
       alcohol: '',
@@ -48,7 +48,7 @@ class Acception extends React.Component {
 
     return (
       <div className='formAndButton'>
-        {!isFormEnabled ? (
+        {isFormEnabled ? (
           <div>
             <button onClick={this.handleConfirm} className='serverButton'>
               Подтвердить
