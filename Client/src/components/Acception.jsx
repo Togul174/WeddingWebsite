@@ -55,7 +55,7 @@ class Acception extends React.Component {
             </button>
 
             {submittedData && (
-              <div className="submittedData" style={{ marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '10px' }}>
+              <div className="submittedData">
                 <h4>Ваши данные:</h4>
                 <p><b>Имя:</b> {submittedData.userName}</p>
                 <p><b>Горячее блюдо:</b> {submittedData.hotDish}</p>
@@ -73,7 +73,7 @@ class Acception extends React.Component {
               nonAlcohol={nonAlcohol}
               onInputChange={this.handleInputChange}
             />
-            <button onClick={this.handleSubmitForm} className='serverButton' style={{ marginTop: '10px' }}>
+            <button onClick={this.handleSubmitForm} className='serverButton'>
               Отправить результат
             </button>
           </div>

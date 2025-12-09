@@ -335,3 +335,9 @@
     background-color: rgb(235, 176, 232);
     transition: .5s;
 }
+
+.submittedData {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
