@@ -5,24 +5,18 @@ class Acception extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFormEnabled: true,
+      isConfirmed: false,
       userName: '',
       hotDish: '',
       alcohol: '',
       nonAlcohol: '',
       submittedData: null,
+      isFormSubmitted: false,
     };
   }
 
-  handleConfirm = () => {
-    this.setState({
-      isFormEnabled: true,
-      submittedData: null,
-      userName: '',
-      hotDish: '',
-      alcohol: '',
-      nonAlcohol: '',
-    });
+  handleConfirmPresence = () => {
+    this.setState({ isConfirmed: true });
   };
 
   handleInputChange = (e) => {
@@ -39,45 +33,55 @@ class Acception extends React.Component {
 
     this.setState({
       submittedData: { userName, hotDish, alcohol, nonAlcohol },
-      isFormEnabled: false,
+      isFormSubmitted: true,
     });
   };
 
   render() {
-    const { isFormEnabled, submittedData, userName, hotDish, alcohol, nonAlcohol } = this.state;
+    const {
+      isConfirmed,
+      isFormSubmitted,
+      submittedData,
+      userName,
+      hotDish,
+      alcohol,
+      nonAlcohol,
+    } = this.state;
+
+    if (!isConfirmed) {
+      return (
+        <div className="formAndButton">
+          <button onClick={this.handleConfirmPresence} className="serverButton">
+            Подтвердить присутствие
+          </button>
+        </div>
+      );
+    }
+
+    if (!isFormSubmitted) {
+      return (
+        <div className="formAndButton">
+          <FormForUser
+            userName={userName}
+            hotDish={hotDish}
+            alcohol={alcohol}
+            nonAlcohol={nonAlcohol}
+            onInputChange={this.handleInputChange}
+          />
+          <button onClick={this.handleSubmitForm} className="serverButton">
+            Отправить результат
+          </button>
+        </div>
+      );
+    }
 
     return (
-      <div className='formAndButton'>
-        {isFormEnabled ? (
-          <div>
-            <button onClick={this.handleConfirm} className='serverButton'>
-              Подтвердить
-            </button>
-
-            {submittedData && (
-              <div className="submittedData">
-                <h4>Ваши данные:</h4>
-                <p><b>Имя:</b> {submittedData.userName}</p>
-                <p><b>Горячее блюдо:</b> {submittedData.hotDish}</p>
-                <p><b>Алкоголь:</b> {submittedData.alcohol}</p>
-                <p><b>Безалкогольные напитки:</b> {submittedData.nonAlcohol}</p>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div>
-            <FormForUser
-              userName={userName}
-              hotDish={hotDish}
-              alcohol={alcohol}
-              nonAlcohol={nonAlcohol}
-              onInputChange={this.handleInputChange}
-            />
-            <button onClick={this.handleSubmitForm} className='serverButton'>
-              Отправить результат
-            </button>
-          </div>
-        )}
+      <div className="formAndButton">
+        <h4>Ваши данные:</h4>
+        <p><b>Имя:</b> {submittedData.userName}</p>
+        <p><b>Горячее блюдо:</b> {submittedData.hotDish}</p>
+        <p><b>Алкоголь:</b> {submittedData.alcohol}</p>
+        <p><b>Безалкогольные напитки:</b> {submittedData.nonAlcohol}</p>
       </div>
     );
   }
