@@ -11,9 +11,9 @@ import SharedPhoto from './images/map.png'
 import OurPhoto from './images/Karta.webp'
 import Palette from './components/Palette.js';
 import Timetable from './components/Timetable.js';
-import YandexMapClass from './components/YandexMap.js';
+import YandexMapClass from './components/YandexMap.jsx';
 import Acception from './components/Acception.jsx';
-import GuestList from './components/GuestList.js';
+import GuestList from './components/GuestList.jsx';
 
 class App extends React.Component {
     render() {
