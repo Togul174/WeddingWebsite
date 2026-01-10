@@ -37,7 +37,7 @@ const initializeDatabase = async () => {
 
 // Регистрация роутов
 app.use('/api', healthRoutes);
-app.use('/', guestRoutes); // сохраняем существующие пути
+app.use('/guests', guestRoutes); // сохраняем существующие пути
 
 // Обработка 404
 app.use(errorHandler.notFound);

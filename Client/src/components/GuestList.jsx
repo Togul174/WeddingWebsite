@@ -1,38 +1,78 @@
-
+// src/components/GuestList.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const GuestList = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: ''
-  });
+  const [formData, setFormData] = useState({ name: '', phone: '' });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [guests, setGuests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingGuests, setLoadingGuests] = useState(false);
+  const [showAdminMode, setShowAdminMode] = useState(false); // Новое состояние для админки
+  const [adminStats, setAdminStats] = useState({ total: 0 });
 
-  // Базовый URL API
   const API_URL = 'http://localhost:3001';
 
-  // Функция для загрузки всех гостей
+  // 1. Обработчик изменения полей формы
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+    setMessage('');
+    setError('');
+  };
+
+  // 2. Валидация формы
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      setError('Введите имя гостя');
+      return false;
+    }
+    if (!formData.phone.trim()) {
+      setError('Введите номер телефона');
+      return false;
+    }
+    return true;
+  };
+
+  // 3. Функция загрузки гостей
   const fetchGuests = async () => {
     setLoadingGuests(true);
     try {
       console.log('Загружаю список гостей...');
-      
       const response = await axios.get(`${API_URL}/guests`);
       
-      if (response.data.success) {
-        setGuests(response.data.guests);
+      console.log('📋 GET /guests ответ:', {
+        status: response.status,
+        data: response.data
+      });
+      
+      if (response.data) {
+        if (response.data.success && Array.isArray(response.data.guests)) {
+          setGuests(response.data.guests);
+          setAdminStats({ total: response.data.guests.length });
+        } else if (Array.isArray(response.data.guests)) {
+          setGuests(response.data.guests);
+          setAdminStats({ total: response.data.guests.length });
+        } else if (Array.isArray(response.data.guest)) {
+          setGuests(response.data.guest);
+          setAdminStats({ total: response.data.guest.length });
+        } else if (Array.isArray(response.data)) {
+          setGuests(response.data);
+          setAdminStats({ total: response.data.length });
+        } else {
+          console.warn('Неожиданный формат данных:', response.data);
+          setError('Неизвестный формат данных от сервера');
+        }
         setError('');
       } else {
-        setError('Не удалось загрузить список гостей');
+        setError('Пустой ответ от сервера');
       }
     } catch (err) {
       console.error('Ошибка при загрузке гостей:', err);
-      
       if (err.response) {
         setError(`Ошибка ${err.response.status}: ${err.response.data.error || 'Неизвестная ошибка'}`);
       } else if (err.request) {
@@ -45,51 +85,18 @@ const GuestList = () => {
     }
   };
 
-  // Загружаем гостей при монтировании компонента
-  useEffect(() => {
-    fetchGuests();
-  }, []);
-
-  // Обработчик изменения полей формы
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-    // Очищаем сообщения при изменении формы
-    setMessage('');
-    setError('');
-  };
-
-  // Валидация формы на клиенте
-  const validateForm = () => {
-    if (!formData.name.trim()) {
-      setError('Введите имя гостя');
-      return false;
-    }
-    
-    if (!formData.phone.trim()) {
-      setError('Введите номер телефона');
-      return false;
-    }
-    
-    return true;
-  };
-
-  // Обработчик отправки формы
+  // 4. Обработчик отправки формы
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setLoading(true);
     setMessage('');
     setError('');
 
-    // Подготовка данных согласно требованиям
     const guestData = {
       name: formData.name.trim(),
       phone: formData.phone.trim()
@@ -99,7 +106,7 @@ const GuestList = () => {
 
     try {
       const response = await axios.post(
-        `${API_URL}/create-guest`,
+        `${API_URL}/guests/create`,
         guestData,
         {
           headers: {
@@ -110,17 +117,10 @@ const GuestList = () => {
 
       console.log('Ответ сервера:', response.data);
       
-      if (response.data.success) {
-        // Показываем успешное сообщение
-        setMessage(response.data.message);
-        
-        // Очищаем форму
-        setFormData({
-          name: '',
-          phone: ''
-        });
-
-        // Обновляем список гостей
+      // Исправленная проверка
+      if (response.status === 201) {
+        setMessage(response.data.message || 'Гость успешно зарегистрирован');
+        setFormData({ name: '', phone: '' });
         fetchGuests();
       } else {
         setError(response.data.error || 'Неизвестная ошибка сервера');
@@ -128,16 +128,13 @@ const GuestList = () => {
 
     } catch (err) {
       console.error('Ошибка при отправке формы:', err);
-      
+
       if (err.response) {
-        // Сервер ответил с ошибкой
         const errorData = err.response.data;
-        setError(errorData.error || `Ошибка ${err.response.status}`);
+        setError(errorData.error || errorData.message || `Ошибка ${err.response.status}`);
       } else if (err.request) {
-        // Запрос был сделан, но ответа нет
         setError('Нет ответа от сервера. Проверьте, запущен ли сервер на порту 3001');
       } else {
-        // Что-то пошло не так при настройке запроса
         setError('Ошибка при отправке запроса: ' + err.message);
       }
     } finally {
@@ -145,7 +142,7 @@ const GuestList = () => {
     }
   };
 
-  // Форматирование даты
+  // 5. Форматирование даты
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('ru-RU', {
@@ -157,14 +154,67 @@ const GuestList = () => {
     });
   };
 
+  // 6. useEffect для начальной загрузки
+  useEffect(() => {
+    fetchGuests();
+  }, []);
+
+  // 7. JSX рендеринг
   return (
     <div className="guest-list-container">
-      <h1>Регистрация гостей</h1>
-      
-      {/* Форма регистрации */}
+      {/* Кнопка переключения режима */}
+      <div style={{ textAlign: 'right', marginBottom: '20px' }}>
+        <button
+          onClick={() => setShowAdminMode(!showAdminMode)}
+          style={{
+            padding: '8px 16px',
+            background: showAdminMode ? '#dc3545' : '#28a745',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          {showAdminMode ? '📱 Обычный режим' : '⚙️ Админ-панель'}
+        </button>
+      </div>
+
+      <h1>{showAdminMode ? '📊 Административная панель' : 'Регистрация гостей'}</h1>
+
+      {/* Статистика для админки */}
+      {showAdminMode && (
+        <div style={{
+          background: '#f8f9fa',
+          padding: '20px',
+          borderRadius: '10px',
+          marginBottom: '20px',
+          border: '1px solid #dee2e6'
+        }}>
+          <h2>Статистика</h2>
+          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+            <div style={{
+              background: 'white',
+              padding: '15px',
+              borderRadius: '8px',
+              minWidth: '150px',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+            }}>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#4a90e2' }}>
+                {adminStats.total}
+              </div>
+              <div style={{ color: '#666', fontSize: '14px' }}>
+                Всего гостей
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Форма регистрации - показываем всегда */}
       <div className="card">
-        <h2>Добавить нового гостя</h2>
-        
+        <h2>{showAdminMode ? 'Добавить гостя (админ)' : 'Добавить нового гостя'}</h2>
+
         <form onSubmit={handleSubmit} className="guest-form">
           <div className="form-group">
             <label htmlFor="name">Имя гостя *</label>
@@ -196,8 +246,8 @@ const GuestList = () => {
             />
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="submit-button"
           >
@@ -222,16 +272,53 @@ const GuestList = () => {
       {/* Список всех гостей */}
       <div className="card">
         <div className="guests-header">
-          <h2>Зарегистрированные гости</h2>
-          <button 
-            onClick={fetchGuests} 
-            disabled={loadingGuests}
-            className="refresh-button"
-          >
-            {loadingGuests ? 'Обновление...' : '🔄 Обновить'}
-          </button>
+          <h2>{showAdminMode ? 'Все зарегистрированные гости' : 'Зарегистрированные гости'}</h2>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {showAdminMode && (
+              <button
+                onClick={() => {
+                  const csvContent = [
+                    ['ID', 'Имя', 'Телефон', 'Дата регистрации'].join(','),
+                    ...guests.map(guest => [
+                      guest.id,
+                      `"${guest.name}"`,
+                      `"${guest.phone}"`,
+                      guest.createdAt || guest.created_at
+                    ].join(','))
+                  ].join('\n');
+                  
+                  const blob = new Blob([csvContent], { type: 'text/csv' });
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `guests_${new Date().toISOString().split('T')[0]}.csv`;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  window.URL.revokeObjectURL(url);
+                }}
+                style={{
+                  padding: '8px 15px',
+                  background: '#28a745',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer'
+                }}
+              >
+                📥 Экспорт CSV
+              </button>
+            )}
+            <button
+              onClick={fetchGuests}
+              disabled={loadingGuests}
+              className="refresh-button"
+            >
+              {loadingGuests ? 'Обновление...' : '🔄 Обновить'}
+            </button>
+          </div>
         </div>
-        
+
         {loadingGuests ? (
           <p>Загрузка списка гостей...</p>
         ) : guests.length === 0 ? (
@@ -255,7 +342,7 @@ const GuestList = () => {
                       <strong>{guest.name}</strong>
                     </td>
                     <td>{guest.phone}</td>
-                    <td>{formatDate(guest.created_at)}</td>
+                    <td>{formatDate(guest.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -393,6 +480,8 @@ const GuestList = () => {
           justify-content: space-between;
           align-items: center;
           margin-bottom: 20px;
+          flex-wrap: wrap;
+          gap: 15px;
         }
         
         .no-guests {
@@ -415,7 +504,7 @@ const GuestList = () => {
           background: #f8f9fa;
           padding: 12px 15px;
           text-align: left;
-          font-weight: 600;
+          font-weight: 600,
           color: #555;
           border-bottom: 2px solid #dee2e6;
         }
