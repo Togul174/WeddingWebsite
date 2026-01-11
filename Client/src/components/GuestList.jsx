@@ -1,4 +1,3 @@
-// src/components/GuestList.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -9,7 +8,7 @@ const GuestList = () => {
   const [guests, setGuests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingGuests, setLoadingGuests] = useState(false);
-  const [showAdminMode, setShowAdminMode] = useState(false); // Новое состояние для админки
+  const [showAdminMode, setShowAdminMode] = useState(false);
   const [adminStats, setAdminStats] = useState({ total: 0 });
 
   const API_URL = 'http://localhost:3001';
@@ -38,17 +37,42 @@ const GuestList = () => {
     return true;
   };
 
-  // 3. Функция загрузки гостей
+  // 3. Функция загрузки гостей - ИСПРАВЛЕННЫЙ URL
   const fetchGuests = async () => {
     setLoadingGuests(true);
     try {
       console.log('Загружаю список гостей...');
-      const response = await axios.get(`${API_URL}/guests`);
       
-      console.log('📋 GET /guests ответ:', {
-        status: response.status,
-        data: response.data
-      });
+      // Пробуем разные эндпоинты
+      const endpoints = [
+        `${API_URL}/api/guests`,    // Основной
+        `${API_URL}/guests`,        // Запасной
+        `${API_URL}/api/admin/guests` // Админский (если нужно)
+      ];
+      
+      let response;
+      let lastError;
+      
+      for (const endpoint of endpoints) {
+        try {
+          console.log(`Пробую эндпоинт: ${endpoint}`);
+          response = await axios.get(endpoint, {
+            timeout: 5000
+          });
+          
+          if (response.data) {
+            console.log(`✅ Ответ от ${endpoint}:`, response.data);
+            break;
+          }
+        } catch (err) {
+          lastError = err;
+          console.log(`❌ Ошибка для ${endpoint}:`, err.message);
+        }
+      }
+      
+      if (!response) {
+        throw lastError || new Error('Нет ответа от сервера');
+      }
       
       if (response.data) {
         if (response.data.success && Array.isArray(response.data.guests)) {
@@ -74,18 +98,18 @@ const GuestList = () => {
     } catch (err) {
       console.error('Ошибка при загрузке гостей:', err);
       if (err.response) {
-        setError(`Ошибка ${err.response.status}: ${err.response.data.error || 'Неизвестная ошибка'}`);
+        setError(`Ошибка ${err.response.status}: ${err.response.data?.error || 'Неизвестная ошибка'}`);
       } else if (err.request) {
-        setError('Нет ответа от сервера. Проверьте подключение.');
+        setError('Нет ответа от сервера. Проверьте: 1) Сервер запущен на порту 3001? 2) CORS настроен?');
       } else {
-        setError('Ошибка при настройке запроса');
+        setError('Ошибка при настройке запроса: ' + err.message);
       }
     } finally {
       setLoadingGuests(false);
     }
   };
 
-  // 4. Обработчик отправки формы
+  // 4. Обработчик отправки формы - ИСПРАВЛЕННЫЙ URL
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -106,7 +130,7 @@ const GuestList = () => {
 
     try {
       const response = await axios.post(
-        `${API_URL}/guests/create`,
+        `${API_URL}/api/guests/create`, // ИСПРАВЛЕННЫЙ URL
         guestData,
         {
           headers: {
@@ -117,7 +141,6 @@ const GuestList = () => {
 
       console.log('Ответ сервера:', response.data);
       
-      // Исправленная проверка
       if (response.status === 201) {
         setMessage(response.data.message || 'Гость успешно зарегистрирован');
         setFormData({ name: '', phone: '' });
@@ -471,7 +494,7 @@ const GuestList = () => {
         
         .error {
           background: #f8d7da;
-          color: #721c24;
+          color: '#721c24';
           border: 1px solid #f5c6cb;
         }
         

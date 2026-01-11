@@ -1,2 +1,5 @@
-# База данных
-guests.db
+
+wedding.db
+
+node_modules/
+Client/node_modules/

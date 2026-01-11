@@ -9,15 +9,20 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "npm install && cd Client && npm install",
-    "init": "(nodemon index.js & sleep 5) && cd Client && npm start"
+    "init": "(nodemon src/index.js & sleep 5) && cd Client && npm start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.13.2",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-session": "^1.18.2",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4",
     "react-router-dom": "^7.12.0",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"

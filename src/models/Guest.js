@@ -1,3 +1,4 @@
+
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
@@ -31,9 +32,9 @@ const Guest = sequelize.define('Guest', {
   }
 }, {
   tableName: 'guests',
-  timestamps: true, 
-  underscored: true, 
-  createdAt: 'created_at' ,
+  timestamps: true,
+  underscored: true,
+  createdAt: 'created_at',
   updatedAt: 'updated_at'
 });
 

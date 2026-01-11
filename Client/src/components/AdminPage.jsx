@@ -1,98 +1,298 @@
 // src/components/AdminPage.jsx
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import '../css/AdminPage.css';
 
 const AdminPage = () => {
-  const [guests, setGuests] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [guests, setGuests] = useState([]);
+  const [loginData, setLoginData] = useState({ login: 'admin', password: 'admin123' });
+  const [error, setError] = useState('');
+  const [stats, setStats] = useState({ total: 0 });
+  
+  const navigate = useNavigate();
+  const API_URL = 'http://localhost:3001';
 
-  const fetchGuests = async () => {
+  // Проверяем авторизацию при загрузке
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
     try {
-      setLoading(true);
-      const response = await fetch('http://localhost:3001/guests');
-      const data = await response.json();
-      setGuests(data.guests || data);
+      const response = await fetch(`${API_URL}/admin/profile`, {
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        setIsAuthenticated(true);
+        fetchAdminGuests();
+      } else {
+        setIsAuthenticated(false);
+      }
     } catch (error) {
-      console.error('Ошибка загрузки:', error);
+      console.error('Ошибка проверки авторизации:', error);
+      setIsAuthenticated(false);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchGuests();
-  }, []);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const response = await fetch(`${API_URL}/admin/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginData),
+        credentials: 'include'
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setIsAuthenticated(true);
+        fetchAdminGuests();
+      } else {
+        setError(data.error || 'Ошибка авторизации');
+      }
+    } catch (error) {
+      console.error('Ошибка входа:', error);
+      setError('Ошибка подключения к серверу');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_URL}/admin/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+      setIsAuthenticated(false);
+      setGuests([]);
+    } catch (error) {
+      console.error('Ошибка выхода:', error);
+    }
+  };
+
+  // Функция для получения гостей через защищенный эндпоинт
+  const fetchAdminGuests = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/api/admin/guests`, {
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        if (response.status === 401) {
+          setIsAuthenticated(false);
+          return;
+        }
+        throw new Error('Ошибка загрузки');
+      }
+
+      const data = await response.json();
+      setGuests(data.guests || []);
+      setStats({ total: data.count || 0 });
+    } catch (error) {
+      console.error('Ошибка загрузки гостей:', error);
+      setError('Не удалось загрузить список гостей');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Или используем публичный эндпоинт для админки (если не работает защищенный)
+  const fetchPublicGuests = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/api/guests`);
+      
+      if (!response.ok) {
+        throw new Error('Ошибка загрузки');
+      }
+
+      const data = await response.json();
+      setGuests(data.guests || []);
+      setStats({ total: data.count || 0 });
+    } catch (error) {
+      console.error('Ошибка загрузки гостей:', error);
+      setError('Не удалось загрузить список гостей');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteGuest = async (id, name) => {
+    if (!window.confirm(`Удалить гостя "${name}"?`)) return;
+
+    try {
+      // Пока используем публичный эндпоинт для удаления
+      const response = await fetch(`${API_URL}/api/guests/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        setGuests(guests.filter(guest => guest.id !== id));
+        alert('Гость успешно удален');
+      } else {
+        alert('Ошибка удаления гостя');
+      }
+    } catch (error) {
+      console.error('Ошибка удаления:', error);
+      alert('Ошибка удаления гостя');
+    }
+  };
 
   if (loading) {
     return (
-      <div style={{ padding: '50px', textAlign: 'center' }}>
-        <h2>Загрузка списка гостей...</h2>
+      <div className="admin-loading">
+        <div className="spinner"></div>
+        <p>Загрузка...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="admin-login-container">
+        <div className="login-card">
+          <h1>🔐 Вход в админ-панель</h1>
+          
+          <form onSubmit={handleLogin} className="login-form">
+            <div className="form-group">
+              <label htmlFor="login">Логин</label>
+              <input
+                type="text"
+                id="login"
+                value={loginData.login}
+                onChange={(e) => setLoginData({...loginData, login: e.target.value})}
+                placeholder="Введите логин"
+                required
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="password">Пароль</label>
+              <input
+                type="password"
+                id="password"
+                value={loginData.password}
+                onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                placeholder="Введите пароль"
+                required
+              />
+            </div>
+            
+            {error && <div className="error-message">{error}</div>}
+            
+            <button type="submit" className="login-button">
+              Войти
+            </button>
+          </form>
+          
+          <div className="login-hint">
+            <p>Демо доступ:</p>
+            <p>Логин: <strong>admin</strong></p>
+            <p>Пароль: <strong>admin123</strong></p>
+          </div>
+          
+          <button 
+            onClick={() => navigate('/')} 
+            className="back-button"
+          >
+            ← На главную
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-        <h1>Административная панель</h1>
+    <div className="admin-container">
+      <header className="admin-header">
         <div>
-          <Link 
-            to="/" 
-            style={{
-              padding: '10px 20px',
-              background: '#4a90e2',
-              color: 'white',
-              textDecoration: 'none',
-              borderRadius: '5px',
-              marginRight: '10px'
-            }}
-          >
-            На главную
-          </Link>
-          <button 
-            onClick={fetchGuests}
-            style={{
-              padding: '10px 20px',
-              background: '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer'
-            }}
-          >
-            Обновить
+          <h1>📊 Панель администратора</h1>
+          <p>Управление списком гостей на свадьбу</p>
+        </div>
+        <div className="admin-controls">
+          <button onClick={fetchAdminGuests} className="refresh-button">
+            🔄 Обновить
           </button>
+          <button onClick={handleLogout} className="logout-button">
+            🚪 Выйти
+          </button>
+          <button onClick={() => navigate('/')} className="back-button">
+            ← На сайт
+          </button>
+        </div>
+      </header>
+
+      {/* Статистика */}
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-number">{stats.total}</div>
+          <div className="stat-label">Всего гостей</div>
         </div>
       </div>
 
-      <div style={{ background: '#f8f9fa', padding: '20px', borderRadius: '10px', marginBottom: '20px' }}>
-        <h2>Статистика</h2>
-        <p>Всего гостей: <strong>{guests.length}</strong></p>
-      </div>
-
-      <div style={{ background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
-        <h2>Список гостей</h2>
+      {/* Таблица гостей */}
+      <div className="guests-table-container">
+        <div className="table-header">
+          <h2>Список гостей</h2>
+          <button onClick={fetchAdminGuests} className="small-refresh">
+            Обновить
+          </button>
+        </div>
+        
         {guests.length === 0 ? (
-          <p>Нет зарегистрированных гостей</p>
+          <div className="no-guests">
+            <p>Нет зарегистрированных гостей</p>
+            <button onClick={fetchPublicGuests} style={{ marginTop: '10px' }}>
+              Загрузить через публичный API
+            </button>
+          </div>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <div className="table-wrapper">
+            <table className="guests-table">
               <thead>
-                <tr style={{ background: '#f5f5f5' }}>
-                  <th style={{ padding: '10px', textAlign: 'left' }}>ID</th>
-                  <th style={{ padding: '10px', textAlign: 'left' }}>Имя</th>
-                  <th style={{ padding: '10px', textAlign: 'left' }}>Телефон</th>
-                  <th style={{ padding: '10px', textAlign: 'left' }}>Дата регистрации</th>
+                <tr>
+                  <th>ID</th>
+                  <th>Имя</th>
+                  <th>Телефон</th>
+                  <th>Дата регистрации</th>
+                  <th>Действия</th>
                 </tr>
               </thead>
               <tbody>
                 {guests.map(guest => (
-                  <tr key={guest.id} style={{ borderBottom: '1px solid #eee' }}>
-                    <td style={{ padding: '10px' }}>{guest.id}</td>
-                    <td style={{ padding: '10px' }}><strong>{guest.name}</strong></td>
-                    <td style={{ padding: '10px' }}>{guest.phone}</td>
-                    <td style={{ padding: '10px' }}>
-                      {new Date(guest.createdAt || guest.created_at).toLocaleDateString('ru-RU')}
+                  <tr key={guest.id}>
+                    <td>{guest.id}</td>
+                    <td><strong>{guest.name}</strong></td>
+                    <td>{guest.phone}</td>
+                    <td>
+                      {new Date(guest.created_at).toLocaleDateString('ru-RU', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => deleteGuest(guest.id, guest.name)}
+                        className="delete-button"
+                        title="Удалить"
+                      >
+                        🗑️ Удалить
+                      </button>
                     </td>
                   </tr>
                 ))}
