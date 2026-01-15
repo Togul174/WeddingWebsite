@@ -1,10 +1,9 @@
 import React from 'react';
 
-class Image extends React.Component {
+class OurPhoto extends React.Component {
     render() {
         return (
             <div>
-                <img className='sharedPhoto' src={this.props.sharedPhoto} alt=''/>
                 <img className='ourPhoto' src={this.props.ourPhoto} alt=''/>
             </div>
 
@@ -13,4 +12,4 @@ class Image extends React.Component {
     }
 }
 
-export default Image;
+export default OurPhoto;

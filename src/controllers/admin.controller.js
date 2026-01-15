@@ -1,4 +1,3 @@
-// controllers/admin.controller.js
 const Admin = require('../models/Admin');
 
 const adminController = {

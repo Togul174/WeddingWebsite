@@ -7,16 +7,18 @@ import WelcomeName from './components/WelcomeName.js';
 import DateCountdown from './components/DateCountdown.jsx';
 import DearGuest from './components/DearGuest.js';
 import RepeatText from './components/RepeatText.js';
-import Image from './components/Image.js';
-import SharedPhoto from './images/map.png'
-import OurPhotoMasha from './images/masha.jpg'
-import OurPhotoIgor from './images/igor.jpg'
+import OurPhotoMasha from './images/ourPhotos/masha.jpg';
+import OurPhotoIgor from './images/ourPhotos/igor.jpg';
+import OurPhoto from './components/OurPhoto.js';
+import SharedPhoto from './components/SharedPhotos.js';
 import Palette from './components/Palette.js';
+import PalacePhotoSlider from './components/PalacePhotoSlider.jsx'
 import Timetable from './components/Timetable.js';
 import YandexMapClass from './components/YandexMap.jsx';
 import Acception from './components/Acception.jsx';
 import GuestList from './components/GuestList.jsx';
-import AdminPage from './components/AdminPage.jsx'; // Импортируем админку
+import AdminPage from './components/AdminPage.jsx'; 
+
 
 // Создаем отдельный компонент для свадебной страницы
 const WeddingPage = () => {
@@ -33,11 +35,11 @@ const WeddingPage = () => {
         <DearGuest dearGuest={<>Дорогие <br />родные и близкие!</>} />
         <RepeatText repeatText={<>Мы рады сообщить Вам, что 25.08.2026 состоится самое главное торжество в нашей жизни - день нашей свадьбы!<br />Приглашаем Вас разделить с нами радость этого незабываемого дня.</>} />
         <RepeatText titleRepeatText={<>25.08.2026 в 17:00</>} />
-        <Image sharedPhoto={SharedPhoto} />
+        <SharedPhoto/>
         <DearGuest dearGuest={<>Там, где посеяна любовь,<br /> растёт радость.</>} />
-        <Image ourPhoto={OurPhotoIgor} />
+        <OurPhoto ourPhoto={OurPhotoIgor} />
         <DearGuest dearGuest="Жених" />
-        <Image ourPhoto={OurPhotoMasha} />
+        <OurPhoto ourPhoto={OurPhotoMasha} />
         <DearGuest dearGuest="Невеста" />
         <RepeatText titleRepeatText="Меню" />
         <RepeatText repeatText={<>Меню разнообразно, поэтому сообщите нам заранее, если у вас есть какие-либо предпочтения или диетические ограничения. После подтверждения вы сможете пройти опрос о своих вкусовых предпочтениях и напитках.</>} />
@@ -50,6 +52,7 @@ const WeddingPage = () => {
         <Palette />
         <Timetable />
         <RepeatText titleRepeatText="Зал бракосочетания" />
+        <PalacePhotoSlider/>
         <YandexMapClass coords={[59.93396, 30.293878]} />
         <RepeatText titleRepeatText="Банкетный зал" />
         <YandexMapClass coords={[59.95959, 30.414220]} />

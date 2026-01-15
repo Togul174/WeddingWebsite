@@ -1,4 +1,5 @@
-const { app, initializeDatabase } = require('./app');
+const  initializeDatabase = require('./src/config/database.init');
+const app = require('./app')
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;

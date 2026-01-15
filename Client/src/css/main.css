@@ -173,40 +173,54 @@
     font-weight: 500;
 }
 
-.sharedPhoto {
+.ourSharedPhoto {
+    margin: 12rem 0;
+}
+
+.sharedPhotoRight, .sharedPhotoLeft {
     display: flex;
     justify-content: center;
-    max-height: 40vh;
-    max-width: 80%;
+    width: 20rem;
+    height: 20rem;
+    margin: -7rem auto;
     text-align: center;
-    margin: auto;
+    border-radius: 50%;
+}
+
+.sharedPhotoRight {
+    margin-right: 10rem;
+}
+
+.sharedPhotoLeft {
+    margin-left: 10rem;
 }
 
 .ourPhoto {
     display: flex;
     justify-content: center;
-    max-height: 30vh;
-    max-width: 60%;
+    width: 20rem;
+    height: 20rem;
+    margin: 5rem auto -2rem auto;
     text-align: center;
-    margin: auto;
     border-radius: 50%;
 }
-
 .colorScheme {
     display: flex;
     justify-content: center;
-    height: auto;
-    max-width: 50%;
-    text-align: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    max-width: 80%;
     margin: 0 auto;
+    padding: 1rem;
 }
 
 .colorScheme div {
-    width: 4rem;
+    min-width: 1rem;
+    min-height: 1rem; 
+    width: 4rem; 
     height: 4rem;
     border-radius: 50%;
-    margin: 0 1rem;
-
+    margin: 0 .6rem;
 }
 
 .color1 {
