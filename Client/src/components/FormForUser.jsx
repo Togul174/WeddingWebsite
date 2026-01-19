@@ -2,19 +2,91 @@ import React from 'react';
 
 class FormForUser extends React.Component {
     render() {
-        const { userName, hotDish, alcohol, nonAlcohol, onInputChange } = this.props;
+        const { 
+            userName, 
+            phone, 
+            attendance,
+            transferNeeded,
+            hotDish, 
+            alcohol, 
+            nonAlcohol, 
+            onInputChange 
+        } = this.props;
 
         return (
             <div className="formBackground">
                 <div className='form'>
-                    <h3>Введите ваше имя и фамилию</h3>
+                    <h3>Ваши имя и фамилия</h3>
                     <input
                         type="text"
                         name="userName"
-                        placeholder="Ваше имя"
+                        placeholder="Имя и фамилия"
                         value={userName}
                         onChange={onInputChange}
                     />
+                    
+                    <h3>Ваш номер телефона</h3>
+                    <input
+                        type="tel"
+                        name="phone"
+                        placeholder="+7..."
+                        value={phone}
+                        onChange={onInputChange}
+                    />
+
+                    <h3>Будете присутствовать на:</h3>
+                    <form>
+                        <label>
+                            <input
+                                type="radio"
+                                name="attendance"
+                                value="Загс"
+                                checked={attendance === "Загс"}
+                                onChange={onInputChange}
+                            /> На церемонии бракосочетания
+                        </label><br />
+                        <label>
+                            <input
+                                type="radio"
+                                name="attendance"
+                                value="Ресторан"
+                                checked={attendance === "Ресторан"}
+                                onChange={onInputChange}
+                            /> На банкете
+                        </label><br />
+                        <label>
+                            <input
+                                type="radio"
+                                name="attendance"
+                                value="Загс и Ресторан"
+                                checked={attendance === "Загс и Ресторан"}
+                                onChange={onInputChange}
+                            /> На церемонии и банкете
+                        </label>
+                    </form>
+
+                    <h3>Требуется ли вам трансфер от ЗАГСа до ресторана?</h3>
+                    <form>
+                        <label>
+                            <input
+                                type="radio"
+                                name="transferNeeded"
+                                value="Да"
+                                checked={transferNeeded === "Да"}
+                                onChange={onInputChange}
+                            /> Да
+                        </label><br />
+                        <label>
+                            <input
+                                type="radio"
+                                name="transferNeeded"
+                                value="Нет"
+                                checked={transferNeeded === "Нет"}
+                                onChange={onInputChange}
+                            /> Нет
+                        </label>
+                    </form>
+                    
 
                     <h3>Какое горячее блюдо предпочитаете?</h3>
                     <form>
@@ -25,7 +97,7 @@ class FormForUser extends React.Component {
                                 value="Мясо"
                                 checked={hotDish === "Мясо"}
                                 onChange={onInputChange}
-                            /> Мясо
+                            /> Свиные медальоны с картофелем черри и перечным соусом
                         </label><br />
                         <label>
                             <input
@@ -34,7 +106,7 @@ class FormForUser extends React.Component {
                                 value="Рыба"
                                 checked={hotDish === "Рыба"}
                                 onChange={onInputChange}
-                            /> Рыба
+                            /> Стейк из трески с картофельным муссом с сыром горгонзола, беконом и луком, соус "Белое вино"
                         </label><br />
                         <label>
                             <input
@@ -105,7 +177,7 @@ class FormForUser extends React.Component {
                         </label>
                     </form>
 
-                    <h3>Безалкогольные напитки</h3>
+                    <h3>Предпочтительные безалкогольные напитки</h3>
                     <form>
                         <label>
                             <input
@@ -120,19 +192,19 @@ class FormForUser extends React.Component {
                             <input
                                 type="radio"
                                 name="nonAlcohol"
-                                value="Газированная вода"
-                                checked={nonAlcohol === "Газированная вода"}
+                                value="Вода"
+                                checked={nonAlcohol === "Вода"}
                                 onChange={onInputChange}
-                            /> Газированная вода
+                            /> Минеральная вода
                         </label><br />
                         <label>
                             <input
                                 type="radio"
                                 name="nonAlcohol"
-                                value="Газированные лимонады"
-                                checked={nonAlcohol === "Газированные лимонады"}
+                                value="Лимонады"
+                                checked={nonAlcohol === "Лимонады"}
                                 onChange={onInputChange}
-                            /> Газированные лимонады
+                            />  Лимонады
                         </label>
                     </form>
                 </div>

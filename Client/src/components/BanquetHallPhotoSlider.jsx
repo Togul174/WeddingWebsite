@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import '../css/simplePhotoSlider.css';
 
-import Photo1 from '../images/palacePhotos/1.jpg';
-import Photo2 from '../images/palacePhotos/2.jpg';
-import Photo3 from '../images/palacePhotos/3.jpg';
-import Photo4 from '../images/palacePhotos/4.jpg';
-import Photo5 from '../images/palacePhotos/5.jpg';
-import Photo6 from '../images/palacePhotos/6.jpg';
+import Photo1 from '../images/banquetHall/1.jpg';
+import Photo2 from '../images/banquetHall/2.jpg';
+import Photo3 from '../images/banquetHall/3.jpg';
+import Photo4 from '../images/banquetHall/4.jpg';
 
-
-const PalacePhotoSlider = () => {
-    const photos = [Photo1, Photo2, Photo3, Photo4, Photo5, Photo6];
+const BanquetHallPhotoSlider = () => {
+    const photos = [Photo1, Photo2, Photo3, Photo4];
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const next = () => {
@@ -52,4 +49,4 @@ const PalacePhotoSlider = () => {
     );
 };
 
-export default PalacePhotoSlider;
+export default BanquetHallPhotoSlider;

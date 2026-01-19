@@ -13,14 +13,13 @@ import OurPhoto from './components/OurPhoto.js';
 import SharedPhoto from './components/SharedPhotos.js';
 import Palette from './components/Palette.js';
 import PalacePhotoSlider from './components/PalacePhotoSlider.jsx'
+import BanquetHallPhotoSlider from './components/BanquetHallPhotoSlider.jsx'
 import Timetable from './components/Timetable.js';
 import YandexMapClass from './components/YandexMap.jsx';
 import Acception from './components/Acception.jsx';
 import GuestList from './components/GuestList.jsx';
 import AdminPage from './components/AdminPage.jsx'; 
 
-
-// Создаем отдельный компонент для свадебной страницы
 const WeddingPage = () => {
   return (
     <div className='main'>
@@ -55,6 +54,7 @@ const WeddingPage = () => {
         <PalacePhotoSlider/>
         <YandexMapClass coords={[59.93396, 30.293878]} />
         <RepeatText titleRepeatText="Банкетный зал" />
+        <BanquetHallPhotoSlider/>
         <YandexMapClass coords={[59.95959, 30.414220]} />
         <RepeatText titleRepeatText="Подтверждение" />
         <RepeatText repeatText={<>Пожалуйста подтвердите свое присутствие до 01.01.2025</>} />
@@ -65,7 +65,6 @@ const WeddingPage = () => {
   );
 };
 
-// Главный App компонент с роутингом
 class App extends React.Component {
   render() {
     return (
