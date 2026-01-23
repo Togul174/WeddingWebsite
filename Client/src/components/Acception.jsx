@@ -7,6 +7,9 @@ class Acception extends React.Component {
     this.state = {
       isConfirmed: false,
       userName: '',
+      phone: '',
+      attendance: '',
+      transferNeeded: '',
       hotDish: '',
       alcohol: '',
       nonAlcohol: '',
@@ -24,15 +27,32 @@ class Acception extends React.Component {
   };
 
   handleSubmitForm = () => {
-    const { userName, hotDish, alcohol, nonAlcohol } = this.state;
+    const { 
+      userName, 
+      phone, 
+      attendance, 
+      transferNeeded, 
+      hotDish, 
+      alcohol, 
+      nonAlcohol 
+    } = this.state;
 
-    if (!userName || !hotDish || !alcohol || !nonAlcohol) {
+    // Проверка обязательных полей
+    if (!userName || !phone || !attendance || !transferNeeded || !hotDish || !alcohol || !nonAlcohol) {
       alert('Пожалуйста, заполните все поля');
       return;
     }
 
     this.setState({
-      submittedData: { userName, hotDish, alcohol, nonAlcohol },
+      submittedData: { 
+        userName, 
+        phone, 
+        attendance, 
+        transferNeeded, 
+        hotDish, 
+        alcohol, 
+        nonAlcohol 
+      },
       isFormSubmitted: true,
     });
   };
@@ -43,6 +63,9 @@ class Acception extends React.Component {
       isFormSubmitted,
       submittedData,
       userName,
+      phone,
+      attendance,
+      transferNeeded,
       hotDish,
       alcohol,
       nonAlcohol,
@@ -63,6 +86,9 @@ class Acception extends React.Component {
         <div className="formAndButton">
           <FormForUser
             userName={userName}
+            phone={phone}
+            attendance={attendance}
+            transferNeeded={transferNeeded}
             hotDish={hotDish}
             alcohol={alcohol}
             nonAlcohol={nonAlcohol}
@@ -77,8 +103,11 @@ class Acception extends React.Component {
 
     return (
       <div className="formAndButton">
-        <h4>Ваши данные:</h4>
+        <h4>Ваши данные успешно отправлены:</h4>
         <p><b>Имя:</b> {submittedData.userName}</p>
+        <p><b>Телефон:</b> {submittedData.phone}</p>
+        <p><b>Присутствие на:</b> {submittedData.attendance}</p>
+        <p><b>Трансфер:</b> {submittedData.transferNeeded}</p>
         <p><b>Горячее блюдо:</b> {submittedData.hotDish}</p>
         <p><b>Алкоголь:</b> {submittedData.alcohol}</p>
         <p><b>Безалкогольные напитки:</b> {submittedData.nonAlcohol}</p>

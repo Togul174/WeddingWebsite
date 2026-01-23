@@ -40,8 +40,8 @@ class FormForUser extends React.Component {
                             <input
                                 type="radio"
                                 name="attendance"
-                                value="Загс"
-                                checked={attendance === "Загс"}
+                                value="ЗАГС"
+                                checked={attendance === "ЗАГС"}
                                 onChange={onInputChange}
                             /> На церемонии бракосочетания
                         </label><br />
@@ -58,8 +58,8 @@ class FormForUser extends React.Component {
                             <input
                                 type="radio"
                                 name="attendance"
-                                value="Загс и Ресторан"
-                                checked={attendance === "Загс и Ресторан"}
+                                value="ЗАГС и Ресторан"
+                                checked={attendance === "ЗАГС и Ресторан"}
                                 onChange={onInputChange}
                             /> На церемонии и банкете
                         </label>

@@ -72,8 +72,6 @@ const guestController = {
         order: [['created_at', 'DESC']] // Используем имя колонки из БД
       });
 
-      // Возвращаем данные в том формате, который ожидает фронтенд
-      // Добавляем created_at и updated_at для админ-панели
       res.status(200).json({
         success: true,
         count: guests.length,
@@ -82,7 +80,7 @@ const guestController = {
           name: guest.name,
           phone: guest.phone,
           createdAt: guest.createdAt,
-          created_at: guest.createdAt, // дублируем для совместимости
+          created_at: guest.createdAt,
           updated_at: guest.updatedAt
         }))
       });
