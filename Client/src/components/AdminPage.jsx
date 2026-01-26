@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import '../css/AdminPage.css';
 
 const AdminPage = () => {
@@ -9,7 +8,6 @@ const AdminPage = () => {
   const [guests, setGuests] = useState([]);
   const [loginData, setLoginData] = useState({ login: 'admin', password: 'admin123' });
   const [error, setError] = useState('');
-  const [stats, setStats] = useState({ total: 0 });
   
   const navigate = useNavigate();
   const API_URL = 'http://localhost:3001';
@@ -27,7 +25,7 @@ const AdminPage = () => {
       
       if (response.ok) {
         setIsAuthenticated(true);
-        fetchAdminGuests();
+        fetchGuests();
       } else {
         setIsAuthenticated(false);
       }
@@ -57,7 +55,7 @@ const AdminPage = () => {
 
       if (data.success) {
         setIsAuthenticated(true);
-        fetchAdminGuests();
+        fetchGuests();
       } else {
         setError(data.error || 'Ошибка авторизации');
       }
@@ -80,35 +78,8 @@ const AdminPage = () => {
     }
   };
 
-  // Функция для получения гостей через защищенный эндпоинт
-  const fetchAdminGuests = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`${API_URL}/api/admin/guests`, {
-        credentials: 'include'
-      });
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          setIsAuthenticated(false);
-          return;
-        }
-        throw new Error('Ошибка загрузки');
-      }
-
-      const data = await response.json();
-      setGuests(data.guests || []);
-      setStats({ total: data.count || 0 });
-    } catch (error) {
-      console.error('Ошибка загрузки гостей:', error);
-      setError('Не удалось загрузить список гостей');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Или используем публичный эндпоинт для админки (если не работает защищенный)
-  const fetchPublicGuests = async () => {
+  // Функция для получения гостей
+  const fetchGuests = async () => {
     try {
       setLoading(true);
       const response = await fetch(`${API_URL}/api/guests`);
@@ -119,7 +90,6 @@ const AdminPage = () => {
 
       const data = await response.json();
       setGuests(data.guests || []);
-      setStats({ total: data.count || 0 });
     } catch (error) {
       console.error('Ошибка загрузки гостей:', error);
       setError('Не удалось загрузить список гостей');
@@ -132,7 +102,6 @@ const AdminPage = () => {
     if (!window.confirm(`Удалить гостя "${name}"?`)) return;
 
     try {
-      // Пока используем публичный эндпоинт для удаления
       const response = await fetch(`${API_URL}/api/guests/${id}`, {
         method: 'DELETE'
       });
@@ -221,7 +190,7 @@ const AdminPage = () => {
           <p>Управление списком гостей на свадьбу</p>
         </div>
         <div className="admin-controls">
-          <button onClick={fetchAdminGuests} className="refresh-button">
+          <button onClick={fetchGuests} className="refresh-button">
             🔄 Обновить
           </button>
           <button onClick={handleLogout} className="logout-button">
@@ -236,7 +205,7 @@ const AdminPage = () => {
       {/* Статистика */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-number">{stats.total}</div>
+          <div className="stat-number">{guests.length}</div>
           <div className="stat-label">Всего гостей</div>
         </div>
       </div>
@@ -244,8 +213,8 @@ const AdminPage = () => {
       {/* Таблица гостей */}
       <div className="guests-table-container">
         <div className="table-header">
-          <h2>Список гостей</h2>
-          <button onClick={fetchAdminGuests} className="small-refresh">
+          <h2>Список гостей ({guests.length})</h2>
+          <button onClick={fetchGuests} className="small-refresh">
             Обновить
           </button>
         </div>
@@ -253,9 +222,6 @@ const AdminPage = () => {
         {guests.length === 0 ? (
           <div className="no-guests">
             <p>Нет зарегистрированных гостей</p>
-            <button onClick={fetchPublicGuests} style={{ marginTop: '10px' }}>
-              Загрузить через публичный API
-            </button>
           </div>
         ) : (
           <div className="table-wrapper">
@@ -276,7 +242,7 @@ const AdminPage = () => {
                     <td><strong>{guest.name}</strong></td>
                     <td>{guest.phone}</td>
                     <td>
-                      {new Date(guest.created_at).toLocaleDateString('ru-RU', {
+                      {new Date(guest.createdAt || guest.created_at).toLocaleDateString('ru-RU', {
                         day: '2-digit',
                         month: '2-digit',
                         year: 'numeric',

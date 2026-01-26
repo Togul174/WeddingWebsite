@@ -17,8 +17,7 @@ const adminController = {
       // Ищем администратора с учетом активности
       const admin = await Admin.findOne({ 
         where: { 
-          login,
-          isActive: true // Проверяем активность администратора
+          login
         } 
       });
       

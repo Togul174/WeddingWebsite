@@ -10,9 +10,8 @@ module.exports = async function initializeDatabase() {
     console.log('✅ Подключение к SQLite успешно');
 
     console.log('🔄 Синхронизация моделей...');
-    // Сначала модели
-    await Admin.sync({ alter: true });
-    await Guest.sync({ alter: true });
+    await Admin.sync();
+    await Guest.sync();
     console.log('✅ Модели синхронизированы');
 
     // Проверяем и создаем админа
@@ -21,26 +20,28 @@ module.exports = async function initializeDatabase() {
     
     if (adminCount === 0) {
       console.log('👤 Создание администратора по умолчанию...');
+      
+      // Берем из переменных окружения или используем дефолтные
       await Admin.create({
-        login: 'admin',
-        password: 'admin123'
+        login: process.env.ADMIN_LOGIN,
+        password: process.env.ADMIN_PASSWORD,
+        role: 'admin',
+        isActive: true
       });
+      
       console.log('✅ Создан администратор по умолчанию');
-      console.log('📋 Данные:');
-      console.log('   👤 Логин: admin');
-      console.log('   🔐 Пароль: admin123');
+      // Просто сообщаем, не показывая данные
+      console.log('📋 Данные установлены');
     } else {
       console.log('✅ Администратор уже существует в БД');
     }
 
-    // Проверяем таблицу guests
     const guestCount = await Guest.count();
     console.log(`👥 Количество гостей в БД: ${guestCount}`);
     
     return true;
   } catch (error) {
     console.error('❌ Ошибка инициализации БД:', error.message);
-    console.error('📋 Подробности:', error);
     throw error;
   }
 };
