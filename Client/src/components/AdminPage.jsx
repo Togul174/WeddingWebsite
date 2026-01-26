@@ -165,12 +165,6 @@ const AdminPage = () => {
             </button>
           </form>
           
-          <div className="login-hint">
-            <p>Демо доступ:</p>
-            <p>Логин: <strong>admin</strong></p>
-            <p>Пароль: <strong>admin123</strong></p>
-          </div>
-          
           <button 
             onClick={() => navigate('/')} 
             className="back-button"

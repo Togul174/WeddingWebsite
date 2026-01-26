@@ -1,6 +1,7 @@
 const sequelize = require('./database');
 const Admin = require('../models/Admin');
 const Guest = require('../models/Guest');
+const bcrypt = require('bcryptjs');
 
 module.exports = async function initializeDatabase() {
   try {
@@ -14,23 +15,20 @@ module.exports = async function initializeDatabase() {
     await Guest.sync();
     console.log('✅ Модели синхронизированы');
 
-    // Проверяем и создаем админа
     const adminCount = await Admin.count();
     console.log(`👥 Количество администраторов в БД: ${adminCount}`);
     
     if (adminCount === 0) {
       console.log('👤 Создание администратора по умолчанию...');
+      const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
       
-      // Берем из переменных окружения или используем дефолтные
       await Admin.create({
-        login: process.env.ADMIN_LOGIN,
-        password: process.env.ADMIN_PASSWORD,
-        role: 'admin',
-        isActive: true
+        login: ADMIN_LOGIN,
+        password: hashedPassword,
+        role: 'admin'
       });
       
       console.log('✅ Создан администратор по умолчанию');
-      // Просто сообщаем, не показывая данные
       console.log('📋 Данные установлены');
     } else {
       console.log('✅ Администратор уже существует в БД');

@@ -1,4 +1,5 @@
 const Admin = require('../models/Admin');
+const bcrypt = require('bcryptjs');
 
 const adminController = {
   // Вход в систему
@@ -14,11 +15,9 @@ const adminController = {
         });
       }
 
-      // Ищем администратора с учетом активности
+      // Ищем администратора
       const admin = await Admin.findOne({ 
-        where: { 
-          login
-        } 
+        where: { login } 
       });
       
       if (!admin) {
@@ -28,8 +27,8 @@ const adminController = {
         });
       }
 
-      // Проверяем пароль
-      const isPasswordValid = await admin.checkPassword(password);
+      // Проверяем пароль прямо здесь
+      const isPasswordValid = await bcrypt.compare(password, admin.password);
       
       if (!isPasswordValid) {
         return res.status(400).json({
@@ -42,13 +41,8 @@ const adminController = {
       req.session.user = {
         id: admin.id,
         login: admin.login,
-        email: admin.email,
-        role: admin.role,
-        createdAt: admin.createdAt
+        role: admin.role
       };
-
-      // Логируем успешный вход
-      console.log(`Admin ${admin.login} logged in at ${new Date().toISOString()}`);
 
       res.json({
         success: true,
@@ -56,7 +50,6 @@ const adminController = {
         user: {
           id: admin.id,
           login: admin.login,
-          email: admin.email,
           role: admin.role
         }
       });
@@ -72,8 +65,6 @@ const adminController = {
 
   // Выход из системы
   logout: (req, res) => {
-    const userLogin = req.session.user?.login;
-    
     req.session.destroy((err) => {
       if (err) {
         console.error('Ошибка при выходе:', err);
@@ -81,10 +72,6 @@ const adminController = {
           success: false,
           error: 'Ошибка сервера'
         });
-      }
-
-      if (userLogin) {
-        console.log(`Admin ${userLogin} logged out at ${new Date().toISOString()}`);
       }
 
       res.json({
@@ -109,8 +96,8 @@ const adminController = {
     }
   },
 
-  // Обновление профиля (опционально)
-  updateProfile: async (req, res) => {
+  // Если нужно обновить пароль администратора
+  updatePassword: async (req, res) => {
     try {
       if (!req.session.user) {
         return res.status(401).json({
@@ -119,7 +106,15 @@ const adminController = {
         });
       }
 
-      const { email } = req.body;
+      const { oldPassword, newPassword } = req.body;
+      
+      if (!oldPassword || !newPassword) {
+        return res.status(400).json({
+          success: false,
+          error: 'Старый и новый пароль обязательны'
+        });
+      }
+
       const admin = await Admin.findByPk(req.session.user.id);
 
       if (!admin) {
@@ -129,20 +124,30 @@ const adminController = {
         });
       }
 
-      admin.email = email || admin.email;
-      await admin.save();
+      // Проверяем старый пароль
+      const isOldPasswordValid = await bcrypt.compare(oldPassword, admin.password);
+      
+      if (!isOldPasswordValid) {
+        return res.status(400).json({
+          success: false,
+          error: 'Неверный старый пароль'
+        });
+      }
 
-      // Обновляем данные в сессии
-      req.session.user.email = admin.email;
+      // Хешируем новый пароль прямо здесь
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+      
+      // Обновляем пароль
+      admin.password = hashedNewPassword;
+      await admin.save();
 
       res.json({
         success: true,
-        message: 'Профиль обновлен',
-        user: req.session.user
+        message: 'Пароль обновлен'
       });
 
     } catch (error) {
-      console.error('Ошибка обновления профиля:', error);
+      console.error('Ошибка обновления пароля:', error);
       res.status(500).json({
         success: false,
         error: 'Ошибка сервера'
