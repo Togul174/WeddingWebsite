@@ -17,7 +17,6 @@ import BanquetHallPhotoSlider from './components/BanquetHallPhotoSlider.jsx'
 import Timetable from './components/Timetable.js';
 import YandexMapClass from './components/YandexMap.jsx';
 import Acception from './components/Acception.jsx';
-import GuestList from './components/GuestList.jsx';
 import AdminPage from './components/AdminPage.jsx'; 
 
 const WeddingPage = () => {
@@ -59,7 +58,6 @@ const WeddingPage = () => {
         <RepeatText titleRepeatText="Подтверждение" />
         <RepeatText repeatText={<>Пожалуйста подтвердите свое присутствие до 01.01.2025</>} />
         <Acception />
-        <GuestList/>
       </div>
     </div>
   );

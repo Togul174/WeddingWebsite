@@ -118,6 +118,12 @@ const AdminPage = () => {
     }
   };
 
+  // Функция для форматирования значений
+  const formatValue = (value) => {
+    if (!value) return '—';
+    return value;
+  };
+
   if (loading) {
     return (
       <div className="admin-loading">
@@ -225,6 +231,11 @@ const AdminPage = () => {
                   <th>ID</th>
                   <th>Имя</th>
                   <th>Телефон</th>
+                  <th>Присутствие</th>
+                  <th>Трансфер</th>
+                  <th>Горячее</th>
+                  <th>Алкоголь</th>
+                  <th>Напитки</th>
                   <th>Дата регистрации</th>
                   <th>Действия</th>
                 </tr>
@@ -233,10 +244,15 @@ const AdminPage = () => {
                 {guests.map(guest => (
                   <tr key={guest.id}>
                     <td>{guest.id}</td>
-                    <td><strong>{guest.name}</strong></td>
-                    <td>{guest.phone}</td>
+                    <td><strong>{formatValue(guest.name)}</strong></td>
+                    <td>{formatValue(guest.phone)}</td>
+                    <td className="text-center">{formatValue(guest.attendance)}</td>
+                    <td className="text-center">{formatValue(guest.transferNeeded)}</td>
+                    <td className="text-center">{formatValue(guest.hotDish)}</td>
+                    <td className="text-center">{formatValue(guest.alcohol)}</td>
+                    <td className="text-center">{formatValue(guest.nonAlcohol)}</td>
                     <td>
-                      {new Date(guest.createdAt || guest.created_at).toLocaleDateString('ru-RU', {
+                      {new Date(guest.createdAt).toLocaleDateString('ru-RU', {
                         day: '2-digit',
                         month: '2-digit',
                         year: 'numeric',

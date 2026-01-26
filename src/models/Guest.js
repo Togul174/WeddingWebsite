@@ -1,4 +1,3 @@
-
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
@@ -10,32 +9,35 @@ const Guest = sequelize.define('Guest', {
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: {
-        msg: 'Имя не может быть пустым'
-      },
-      len: {
-        args: [2, 100],
-        msg: 'Имя должно быть от 2 до 100 символов'
-      }
-    }
+    allowNull: false
   },
   phone: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: {
-        msg: 'Телефон не может быть пустым'
-      }
-    }
+    allowNull: false
+  },
+  attendance: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  transferNeeded: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  hotDish: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  alcohol: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  nonAlcohol: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 }, {
   tableName: 'guests',
-  timestamps: true,
-  underscored: true,
-  createdAt: 'created_at',
-  updatedAt: 'updated_at'
+  timestamps: true
 });
 
 module.exports = Guest;

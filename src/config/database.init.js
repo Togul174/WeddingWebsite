@@ -15,15 +15,22 @@ module.exports = async function initializeDatabase() {
     await Guest.sync();
     console.log('✅ Модели синхронизированы');
 
+    // Проверяем и создаем админа
     const adminCount = await Admin.count();
     console.log(`👥 Количество администраторов в БД: ${adminCount}`);
     
     if (adminCount === 0) {
       console.log('👤 Создание администратора по умолчанию...');
-      const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
+      
+      // Используем переменные окружения или дефолтные значения
+      const adminLogin = process.env.ADMIN_LOGIN;
+      const adminPassword = process.env.ADMIN_PASSWORD;
+      
+      // Хешируем пароль
+      const hashedPassword = await bcrypt.hash(adminPassword, 10);
       
       await Admin.create({
-        login: ADMIN_LOGIN,
+        login: adminLogin,
         password: hashedPassword,
         role: 'admin'
       });
