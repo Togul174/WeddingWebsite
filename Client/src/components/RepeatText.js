@@ -5,7 +5,7 @@ class RepeatText extends React.Component {
         return (<div>
             <div className='titleRepeatText'>{this.props.titleRepeatText}</div>
             <div className="repeatText">{this.props.repeatText}</div>
-            
+            <div className='dateWed'>{this.props.dateWed}</div>
         </div>
 
         )

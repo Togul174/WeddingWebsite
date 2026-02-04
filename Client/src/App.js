@@ -7,8 +7,6 @@ import WelcomeName from './components/WelcomeName.js';
 import DateCountdown from './components/DateCountdown.jsx';
 import DearGuest from './components/DearGuest.js';
 import RepeatText from './components/RepeatText.js';
-import OurPhotoMasha from './images/ourPhotos/masha.jpg';
-import OurPhotoIgor from './images/ourPhotos/igor.jpg';
 import OurPhoto from './components/OurPhoto.js';
 import SharedPhoto from './components/SharedPhotos.js';
 import Palette from './components/Palette.js';
@@ -17,7 +15,7 @@ import BanquetHallPhotoSlider from './components/BanquetHallPhotoSlider.jsx'
 import Timetable from './components/Timetable.js';
 import YandexMapClass from './components/YandexMap.jsx';
 import Acception from './components/Acception.jsx';
-import AdminPage from './components/AdminPage.jsx'; 
+import AdminPage from './components/AdminPage.jsx';
 
 const WeddingPage = () => {
   return (
@@ -31,32 +29,30 @@ const WeddingPage = () => {
       </div>
       <div className='mainDiscrPage'>
         <DearGuest dearGuest={<>Дорогие <br />родные и близкие!</>} />
-        <RepeatText repeatText={<>Мы рады сообщить Вам, что 25.08.2026 состоится самое главное торжество в нашей жизни - день нашей свадьбы!<br />Приглашаем Вас разделить с нами радость этого незабываемого дня.</>} />
-        <RepeatText titleRepeatText={<>25.08.2026 в 17:00</>} />
-        <SharedPhoto/>
-        <DearGuest dearGuest={<>Там, где посеяна любовь,<br /> растёт радость.</>} />
-        <OurPhoto ourPhoto={OurPhotoIgor} />
-        <DearGuest dearGuest="Жених" />
-        <OurPhoto ourPhoto={OurPhotoMasha} />
-        <DearGuest dearGuest="Невеста" />
-        <RepeatText titleRepeatText="Меню" />
-        <RepeatText repeatText={<>Меню разнообразно, поэтому сообщите нам заранее, если у вас есть какие-либо предпочтения или диетические ограничения. После подтверждения вы сможете пройти опрос о своих вкусовых предпочтениях и напитках.</>} />
-        <RepeatText titleRepeatText="Пожелания по подаркам" />
-        <RepeatText repeatText={<>Ваше присутствие в день нашей свадьбы - самый значимый подарок для нас! Мы понимаем, что дарить цветы на свадьбу - это традиция, но мы не сможем насладиться их красотой в полной мере... Будем рады любой другой альтернативе (вино или в денежном эквиваленте).</>} />
-        <RepeatText titleRepeatText="Примечание" />
-        <RepeatText repeatText={<>Будем благодарны, если вы воздержитесь от криков "Горько" на празднике, ведь поцелуй — это знак выражения чувств, он не может быть по заказу.</>} />
+        <RepeatText repeatText={<>Один день в этом году будет для нас особенным, и мы хотим разделить его с вами!<br />Приглашаем Вас на торжество, посвященное дню нашего бракосочетания, которое состится:</>} />
+        <RepeatText dateWed={<>25 августа 2026</>} />
+        <SharedPhoto />
+        <DearGuest dearGuest={<>Свадьба - это момент,<br />  когда две судьбы становятся одной!</>} />
+        <OurPhoto/>
+        <RepeatText titleRepeatText="Детали" />        
+        <RepeatText repeatText={<>Мы не хотим обременять Вас выбором подарка, поэтому будем рады вкладу в бюджет нашей молодой семьи.</>} />
+        <RepeatText repeatText={<>Мы понимаем, что дарить цветы на свадьбу - это традиция, но мы не сможем насладиться их красотой в полной мере...Будем рады, если вместо цветов Вы подарите нам немного азарта. В качестве дополнения к подарку мы будем искренне благодарны за лотерейные билеты, зарегистрированные на наши номера телефонов: <br/>+7 964 378-24-65 или +7 950 251-45-73.</>} />
+        <RepeatText repeatText={<>Обращаем внимание, что формат мероприятия не предполагает детской площадки и аниматоров. Пожалуйста, позаботьтесь о том, чтобы провести этот вечер без детей.</>} />
+        <RepeatText repeatText={<>От всего сердца просим Вас воздержаться от криков "Горько" и сохранить атмосферу уютного семейного праздника.</>} />        
         <DearGuest dearGuest="Ждем Вас на свадьбе!" />
         <RepeatText repeatText={<>Будем благодарны, если при выборе нарядов на наше торжество вы придержитесь следующей палитры.</>} />
         <Palette />
         <Timetable />
-        <RepeatText titleRepeatText="Зал бракосочетания" />
-        <PalacePhotoSlider/>
+        <RepeatText titleRepeatText={<>Дворец Бракосочетания</>} />
+        <PalacePhotoSlider />
         <YandexMapClass coords={[59.93396, 30.293878]} />
-        <RepeatText titleRepeatText="Банкетный зал" />
-        <BanquetHallPhotoSlider/>
+        <RepeatText titleRepeatText={<>Банкетный зал</>} />
+        <BanquetHallPhotoSlider />
         <YandexMapClass coords={[59.95959, 30.414220]} />
+        <DearGuest dearGuest="Ждем Вас на свадьбе!" />
         <RepeatText titleRepeatText="Подтверждение" />
-        <RepeatText repeatText={<>Пожалуйста подтвердите свое присутствие до 01.01.2025</>} />
+        <RepeatText repeatText={<>Пожалуйста, подтвердите свое присутствие до 01.07.2026. <br/> Если вы придете с вашей второй половинкой, необходимо повторно заполнить анкету от его/её имени. </>} />
+
         <Acception />
       </div>
     </div>

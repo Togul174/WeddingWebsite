@@ -9,7 +9,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "npm install && cd Client && npm install",
-    "init": "(nodemon src/index.js & sleep 5) && cd Client && npm start"
+    "init": "start /b nodemon src/index.js && timeout /t 5 && cd Client && start npm start"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +18,7 @@
     "axios": "^1.13.2",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-session": "^1.18.2",

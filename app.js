@@ -1,44 +1,30 @@
 const express = require('express');
 const session = require('express-session');
-const routes = require('./src/routes/index');
+const cors = require('cors');
+const routes = require('./src/routes');
 
 const app = express();
 
-// Настройка CORS для фронтенда
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  next();
-});
+// Настройка CORS
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
 // Настройка сессий
-const sessionConfig = {
-  secret: process.env.SESSION_SECRET || 'wedding-secret-key',
+app.use(session({
+  secret: 'wedding-secret-key', 
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: false
+    secure: false,
+    sameSite: 'lax'
   }
-};
+}));
 
-app.use(session(sessionConfig));
 app.use(express.json());
-app.use(routes);
-
-// // Middleware для проверки авторизации
-// const requireAuth = (req, res, next) => {
-//   if (req.session && req.session.user) {
-//     next();
-//   } else {
-//     res.status(401).json({
-//       success: false,
-//       error: 'Требуется авторизация'
-//     });
-//   }
-// };
+app.use('/api', routes);
 
 module.exports = app;

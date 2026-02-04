@@ -17,8 +17,11 @@
 * {
     margin: 0;
     padding: 0;
-    font-size: 16px;
     font-family: "Cormorant", serif;
+}
+
+html {
+    font-size: 16px;
 }
 
 .main {
@@ -33,12 +36,9 @@
     position: relative;
     display: block;
     text-align: center;
-
     width: 100%;
     height: 100vh;
     text-transform: uppercase;
-
-
 }
 
 .header {
@@ -46,22 +46,19 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-
     width: 100%;
     height: 20vh;
     text-transform: uppercase;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     letter-spacing: .1rem;
 }
 
 .ourWedding {
     width: 100%;
-    height: 48vh;
-
+    height: 45vh;
     display: flex;
     justify-content: center;
     align-items: center;
-
     color: #ffffff;
     font-size: 8rem;
     font-weight: 100;
@@ -70,6 +67,7 @@
 
 .ourName {
     position: absolute;
+    height: 45vh;
     top: 44%;
     left: 48%;
     height: 25rem;
@@ -91,16 +89,16 @@
 
 .footer {
     display: block;
+    height: 15vh;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding-top: 50px;
 }
 
-
 .footer p {
     padding: 8px;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     text-transform: uppercase;
     letter-spacing: .1rem;
 }
@@ -108,9 +106,8 @@
 .footer .date {
     text-transform: none;
     font-weight: 400;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-family: 'Great Vibes';
-
 }
 
 .countdown {
@@ -118,10 +115,8 @@
     justify-content: center;
     text-align: center;
     margin-top: 2rem;
-
-
     font-weight: 500;
-
+    height: 20vh;
     text-transform: lowercase;
 }
 
@@ -130,7 +125,6 @@
     margin: 0 1rem;
     font-size: 2rem;
 }
-
 
 /* ------------ Second Page -------------- */
 
@@ -149,8 +143,9 @@
     align-items: center;
     text-align: center;
     height: 20vh;
-
-    font-size: 8rem;
+    margin: 0 auto;
+    width: 80%;
+    font-size: 10rem;
     font-family: 'WonderGardenScript-Regular';
     line-height: 4rem;
 }
@@ -160,7 +155,7 @@
     margin: 4rem auto;
     text-align: center;
     line-height: 2rem;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
 .titleRepeatText {
@@ -168,47 +163,67 @@
     margin: 1rem auto;
     text-align: center;
     line-height: 2rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     text-transform: uppercase;
     font-weight: 500;
+}
+
+.dateWed {
+    text-align: center;
+    font-size: 3rem;
+    font-family: 'Great Vibes';
+    letter-spacing: .2rem;
 }
 
 .ourSharedPhoto {
     margin: 12rem 0;
 }
 
-.sharedPhotoRight, .sharedPhotoLeft {
+.sharedPhotoRight,
+.sharedPhotoLeft {
     display: flex;
     justify-content: center;
-    width: 20rem;
-    height: 20rem;
-    margin: -7rem auto;
+    width: 18vw;
+    height: 18vw;
+    margin: -7% auto;
     text-align: center;
     border-radius: 50%;
 }
 
 .sharedPhotoRight {
-    margin-right: 10rem;
+    margin-right: 16%;
 }
 
 .sharedPhotoLeft {
-    margin-left: 10rem;
+    margin-left: 16%;
+}
+
+.ourPhotoContainer {
+    display: flex;
+    justify-content: center;
+    gap: 10%;
+    margin: 5rem 0 1rem 0;
 }
 
 .ourPhoto {
     display: flex;
     justify-content: center;
-    width: 20rem;
-    height: 20rem;
-    margin: 5rem auto -2rem auto;
+    width: 18vw;
+    height: 18vw;
     text-align: center;
     border-radius: 50%;
 }
+
+.brideRole {
+    margin: 1rem 0;
+    font-family: 'WonderGardenScript-Regular';
+    font-size: 10rem;
+}
+
 .colorScheme {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1rem;
     max-width: 80%;
     margin: 0 auto;
     padding: 1rem;
@@ -216,9 +231,9 @@
 
 .colorScheme div {
     min-width: 1rem;
-    min-height: 1rem; 
-    width: 4rem; 
-    height: 4rem;
+    min-height: 1rem;
+    width: 5vw;
+    height: 5vw;
     border-radius: 50%;
     margin: 0 .6rem;
 }
@@ -249,9 +264,8 @@
     margin: 6rem auto;
     padding: 1.5rem 0;
     background-color: #b4b4b4;
-
 }
- 
+
 .wedTimetable {
     display: flex;
     justify-content: center;
@@ -259,8 +273,7 @@
     text-align: center;
     height: auto;
     margin: 6rem 0;
-
-    font-size: 9rem;
+    font-size: 10rem;
     font-family: 'WonderGardenScript-Regular';
     line-height: 4rem;
     font-weight: normal;
@@ -273,22 +286,65 @@
 }
 
 .timeOfTable {
-    font-size: 1.7rem;
-    margin: 2rem;
+    font-size: 2rem;
+    margin: auto 2rem;
     font-weight: bold;
 }
 
 .inviteOfTable h2 {
-    font-size: 1.4rem;
+    font-size: 1.7rem;
 }
 
 .inviteOfTable div {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+}
+
+.simple-slider {
+    max-width: 80%;
+    margin: 5rem auto;
+    text-align: center;
+}
+
+.slider-photo {
+    max-width: 100%;
+    max-height: 60vh;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.slider-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.control-btn {
+    background: #f0f0f0;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.control-btn:hover {
+    background: #ddd;
+}
+
+.slider-info {
+    font-size: 16px;
+    color: #666;
 }
 
 .yandexMap {
     width: 80%;
-    height: 40vh;
+    height: 50vh;
     margin: 2rem auto 4rem auto;
 }
 
@@ -297,7 +353,6 @@
     width: 40%;
     text-align: center;
     margin: 5rem auto;
-
     border-radius: 1rem;
     font-size: 2rem;
     background-color: #f00000;
@@ -334,18 +389,18 @@
 
 .serverButton {
     height: 5vh;
-    width: 60%;
+    width: 50%;
     display: flex;
     justify-content: center;
     text-align: center;
     margin: 2rem auto;
     border-radius: 1rem;
     font-size: 1.5rem;
-    background-color: #f00000;
+    background-color: #d3d3d3;
 }
 
 .serverButton:hover {
-    background-color: rgb(235, 176, 232);
+    background-color: #aaaaaa;
     transition: .5s;
 }
 
@@ -355,365 +410,212 @@
     padding-top: 10px;
 }
 
-/* ============ АДАПТИВ ДЛЯ ПЛАНШЕТОВ ============ */
+/* =============== Адаптив ================= */
 
-@media (max-width: 1024px) {
-    .ourWedding {
-        font-size: 6rem;
-    }
-    
-    .ourName {
-        font-size: 14rem;
-        top: 48%;
-        line-height: 6rem;
-    }
-    
-    .ourName p {
-        font-size: 9rem;
-        top: 6rem;
-        right: 4rem;
-    }
-    
-    .mainDiscrPage {
-        width: 70%;
-    }
-    
-    .dearGuest {
-        font-size: 6rem;
-        height: 15vh;
-    }
-    
-    .wedTimetable {
-        font-size: 7rem;
-        margin: 4rem 0;
-    }
-    
-    .repeatText,
-    .titleRepeatText {
-        width: 70%;
-    }
-    
-    .colorScheme {
-        max-width: 70%;
+@media (max-width: 1600px) {
+    html {
+        font-size: 15px;
     }
 }
 
-@media (max-width: 768px) {
-    .header {
-        font-size: 1rem;
-        height: 15vh;
-    }
-    
-    .ourWedding {
-        font-size: 4.5rem;
-        height: 40vh;
-    }
-    
-    .ourName {
-        font-size: 10rem;
-        line-height: 4.5rem;
-        top: 42%;
-    }
-    
-    .ourName p {
-        font-size: 6.5rem;
-        top: 4.5rem;
-        right: 2.5rem;
-    }
-    
-    .footer p {
-        font-size: 1rem;
-    }
-    
-    .footer .date {
-        font-size: 1.7rem;
-    }
-    
-    .dateCountdown {
-        font-size: 1.7rem;
-    }
-    
-    .mainDiscrPage {
-        width: 85%;
-        margin-top: 3rem;
-        padding: 2.5rem 0;
-    }
-    
-    .dearGuest {
-        font-size: 4.5rem;
-        height: 12vh;
-        line-height: 3rem;
-    }
-    
-    .repeatText {
-        width: 80%;
-        font-size: 1.2rem;
-        margin: 3rem auto;
-    }
-    
-    .titleRepeatText {
-        width: 80%;
-        font-size: 1.3rem;
-    }
-    
-    .wedTimetable {
-        font-size: 5rem;
-        margin: 3rem 0;
-    }
-    
-    .elTimetable {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        margin: 3rem 1rem;
-    }
-    
-    .timeOfTable {
-        margin: 0 0 1rem 0;
-        font-size: 1.5rem;
-    }
-    
-    .timetable {
-        width: 90%;
-        margin: 4rem auto;
-    }
-    
-    .colorScheme {
-        max-width: 85%;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-    
-    .colorScheme div {
-        width: 3.5rem;
-        height: 3.5rem;
-        margin: 0.5rem;
-    }
-    
-    .confirmationButton {
-        width: 60%;
-        font-size: 1.7rem;
-        margin: 4rem auto;
-    }
-    
-    .formBackground {
-        width: 90%;
-    }
-    
-    .form {
-        width: 80%;
-    }
-    
-    .yandexMap {
-        width: 90%;
-        height: 35vh;
-    }
-}
-
-/* ============ АДАПТИВ ДЛЯ ТЕЛЕФОНОВ ============ */
-@media (max-width: 480px) {
-    * {
+@media (max-width: 1366px) {
+    html {
         font-size: 14px;
     }
-    
-    .header {
-        font-size: 0.9rem;
-        height: 12vh;
-        letter-spacing: 0.05rem;
-    }
-    
-    .ourWedding {
-        font-size: 3rem;
-        height: 35vh;
-        letter-spacing: 0.2rem;
-    }
-    
-    .ourName {
-        font-size: 6rem;
-        line-height: 3rem;
-        top: 42%;
+}
 
+@media (max-width: 1024px) {
+    html {
+        font-size: 13px;
     }
-    
-    .ourName p {
-        font-size: 4rem;
-        top: 3rem;
-        right: 1.5rem;
-    }
-    
-    .footer {
-        padding-top: 30px;
-    }
-    
-    .footer p {
-        font-size: 0.9rem;
-        padding: 5px;
-    }
-    
-    .footer .date {
-        font-size: 1.5rem;
-    }
-    
-    .countdown {
-        flex-wrap: wrap;
-        margin-top: 1.5rem;
-    }
-    
-    .dateCountdown {
-        font-size: 1.5rem;
-        margin: 0 0.5rem;
-    }
-    
+
     .mainDiscrPage {
-        width: 95%;
-        margin-top: 2rem;
-        padding: 2rem 0;
+        width: 70%;
     }
-    
-    .dearGuest {
-        font-size: 3.5rem;
-        height: 10vh;
-        line-height: 2.5rem;
-    }
-    
-    .repeatText {
-        width: 85%;
-        font-size: 1.1rem;
-        line-height: 1.7rem;
-        margin: 2rem auto;
-    }
-    
-    .titleRepeatText {
-        width: 85%;
-        font-size: 1.2rem;
-        margin: 0.5rem auto;
-    }
-    
-    .sharedPhoto,
+
+    .sharedPhotoRight,
+    .sharedPhotoLeft,
     .ourPhoto {
-        max-width: 90%;
-        max-height: 35vh;
-    }
-    
-    .ourPhoto {
-        width: 70vw;
-        height: 70vw;
-        max-width: 70vw;
-        max-height: 70vw;
-    }
-    
-    .colorScheme {
-        max-width: 95%;
-        justify-content: center;
-    }
-    
-    .colorScheme div {
-        width: 3rem;
-        height: 3rem;
-        margin: 0.3rem;
-    }
-    
-    .timetable {
-        width: 95%;
-        margin: 3rem auto;
-        padding: 1rem 0;
-    }
-    
-    .wedTimetable {
-        font-size: 3.5rem;
-        margin: 2rem 0;
-        line-height: 3rem;
-    }
-    
-    .elTimetable {
-        margin: 2rem 0.5rem;
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .timeOfTable {
-        font-size: 1.4rem;
-        margin: 0 0 0.5rem 0;
-    }
-    
-    .inviteOfTable h2 {
-        font-size: 1.2rem;
-    }
-    
-    .inviteOfTable div {
-        font-size: 1.1rem;
-    }
-    
-    .yandexMap {
-        width: 95%;
-        height: 30vh;
-        margin: 1.5rem auto 3rem auto;
-    }
-    
-    .confirmationButton {
-        width: 80%;
-        font-size: 1.5rem;
-        height: 6vh;
-        margin: 3rem auto;
-    }
-    
-    .formBackground {
-        width: 95%;
-    }
-    
-    .form {
-        width: 90%;
-        padding: 1.5rem 0;
-    }
-    
-    .form h3 {
-        font-size: 1.3rem;
-    }
-    
-    .form form {
-        font-size: 1.2rem;
-    }
-    
-    .serverButton {
-        width: 80%;
-        font-size: 1.3rem;
-        height: 6vh;
+        width: 25vw;
+        height: 25vw;
     }
 }
 
-/* ============ МАЛЕНЬКИЕ ТЕЛЕФОНЫ ============ */
-@media (max-width: 360px) {
+@media (max-width: 820px) {
+    html {
+        font-size: 12px;
+    }
+
+    .header {
+        font-size: 2rem;
+    }
+
     .ourWedding {
+        font-size: 10rem;
+    }
+
+    .ourName {
+        font-size: 20rem;
+    }
+
+    .ourName p {
+        font-size: 15rem;
+    }
+
+    .footer .date {
+        font-size: 3rem;
+    }
+
+    .footer p {
+        font-size: 1.8rem;
+    }
+
+    .dateCountdown {
+        font-size: 3rem;
+    }
+
+    .mainDiscrPage {
+        width: 80%;
+    }
+
+    .repeatText {
+        width: 70%;
+    }
+
+    .titleRepeatText,
+    .repeatText {
+        font-size: 2rem;
+    }
+
+    .sharedPhotoRight,
+    .sharedPhotoLeft,
+    .ourPhoto {
+        width: 30vw;
+        height: 30vw;
+    }
+
+    .ourPhotoContainer {
+        gap: 5%;
+    }
+
+    .wedTimetable {
+        font-size: 11rem;
+    }
+
+    .timeOfTable {
+        font-size: 2.2rem;
+    }
+
+    .inviteOfTable h2 {
+        font-size: 2rem;
+    }
+
+    .inviteOfTable div {
+        font-size: 1.7rem;
+    }
+
+    .yandexMap {
+        height: 30vh;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 10px;
+    }
+
+    .header {
+        font-size: 1.5rem;
+    }
+
+    .ourWedding {
+        font-size: 8rem;
+    }
+
+    .ourName {
+        font-size: 17rem;
+    }
+
+    .ourName p {
+        font-size: 13rem;
+    }
+
+    .footer .date {
         font-size: 2.5rem;
     }
-    
+
+    .footer p {
+        font-size: 1.5rem;
+    }
+
+    .dateCountdown {
+        font-size: 2.3rem;
+    }
+
+    .mainDiscrPage {
+        width: 90%;
+    }
+
+    .titleRepeatText,
+    .repeatText {
+        font-size: 1.8rem;
+    }
+
+    .sharedPhotoRight,
+    .sharedPhotoLeft,
+    .ourPhoto {
+        width: 35vw;
+        height: 35vw;
+    }
+
+    .brideRole {
+        margin: 1rem 0;
+        font-size: 8rem;
+    }
+
+    .timetable {
+        width: 90%;
+    }
+
+    .yandexMap {
+        width: 90%;
+    }
+
+    .simple-slider {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 320px) {
+    html {
+        font-size: 8px;
+    }
+
+    .header {
+        font-size: 2rem;
+    }
+
+    .ourWedding {
+        font-size: 10rem;
+    }
+
     .ourName {
-        font-size: 5rem;
-        line-height: 2.5rem;
-        top: 39%;
+        font-size: 20rem;
     }
-    
+
     .ourName p {
-        font-size: 3.2rem;
-        top: 2.5rem;
-        right: 1.2rem;
+        font-size: 15rem;
     }
-    
-    .dearGuest {
-        font-size: 2.8rem;
+
+    .footer .date {
+        font-size: 3rem;
     }
-    
-    .wedTimetable {
-        font-size: 2.8rem;
+
+    .footer p {
+        font-size: 1.8rem;
     }
-    
-    .colorScheme div {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
-    
-    .confirmationButton,
-    .serverButton {
-        font-size: 1.3rem;
+
+    .dateCountdown {
+        font-size: 3rem;
     }
 }

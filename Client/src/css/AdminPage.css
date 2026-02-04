@@ -1,6 +1,4 @@
-/* AdminPage.css - Красивые и простые стили */
 
-/* Общие стили */
 .admin-loading {
   display: flex;
   flex-direction: column;
@@ -29,7 +27,6 @@
   font-size: 18px;
 }
 
-/* Форма логина */
 .admin-login-container {
   display: flex;
   justify-content: center;
@@ -83,12 +80,18 @@
   border-radius: 10px;
   font-size: 16px;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .form-group input:focus {
   outline: none;
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
 }
 
 .error-message {
@@ -99,6 +102,7 @@
   margin: 20px 0;
   border-left: 4px solid #c33;
   font-size: 14px;
+  text-align: center;
 }
 
 .login-button {
@@ -114,22 +118,47 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.login-button:hover {
+.login-button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.test-credentials {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+}
+
+.test-credentials h4 {
+  color: #333;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+}
+
+.test-credentials p {
+  margin: 5px 0;
+  color: #666;
+  font-size: 13px;
 }
 
 .back-button {
   background: #f5f5f5;
   color: #666;
   border: 2px solid #e0e0e0;
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: 10px;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .back-button:hover {
@@ -137,7 +166,6 @@
   border-color: #ccc;
 }
 
-/* Основной контейнер админки */
 .admin-container {
   min-height: 100vh;
   background: #f8f9fa;
@@ -210,7 +238,6 @@
   background: #ffcdd2;
 }
 
-/* Статистика */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -246,7 +273,6 @@
   letter-spacing: 1px;
 }
 
-/* Контейнер таблицы */
 .guests-table-container {
   background: white;
   border-radius: 15px;
@@ -267,6 +293,9 @@
   margin: 0;
   color: #333;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .small-refresh {
@@ -278,6 +307,9 @@
   font-size: 13px;
   cursor: pointer;
   transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .small-refresh:hover {
@@ -291,7 +323,10 @@
   font-size: 16px;
 }
 
-/* Таблица */
+.no-guests p {
+  margin-bottom: 20px;
+}
+
 .table-wrapper {
   overflow-x: auto;
   max-width: 100%;
@@ -301,7 +336,7 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  min-width: 1200px; /* Минимальная ширина для всех колонок */
+  min-width: 1200px;
 }
 
 .guests-table thead {
@@ -346,45 +381,28 @@
 
 .guests-table td:first-child {
   font-weight: 600;
-  color: #667eea;
 }
 
-.guests-table td strong {
-  color: #222;
-}
-
-.guests-table td.text-center {
-  text-align: center;
-  font-weight: 500;
-}
-
-/* Цвета для разных значений в таблице */
-.guests-table td:nth-child(4) { /* Присутствие */
+.attendance-yes {
   color: #2e7d32;
   font-weight: 500;
 }
 
-.guests-table td:nth-child(5) { /* Трансфер */
+.attendance-no {
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+.transfer-yes {
   color: #1565c0;
   font-weight: 500;
 }
 
-.guests-table td:nth-child(6) { /* Горячее */
-  color: #ff9800;
+.transfer-no {
+  color: #666;
   font-weight: 500;
 }
 
-.guests-table td:nth-child(7) { /* Алкоголь */
-  color: #c2185b;
-  font-weight: 500;
-}
-
-.guests-table td:nth-child(8) { /* Напитки */
-  color: #00838f;
-  font-weight: 500;
-}
-
-/* Кнопка удаления */
 .delete-button {
   background: #ffebee;
   color: #d32f2f;
@@ -405,7 +423,22 @@
   transform: scale(1.05);
 }
 
-/* Адаптивность */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-container,
+.login-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
 @media (max-width: 768px) {
   .admin-container {
     padding: 10px;
@@ -425,11 +458,16 @@
     flex-direction: column;
     gap: 15px;
     text-align: center;
+    padding: 15px;
   }
   
   .login-card {
     padding: 30px 20px;
     margin: 0 10px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
   
   .guests-table {
@@ -439,22 +477,5 @@
   .guests-table th,
   .guests-table td {
     padding: 10px 8px;
-  }
-}
-
-/* Плавное появление */
-.admin-container,
-.login-card {
-  animation: fadeIn 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }

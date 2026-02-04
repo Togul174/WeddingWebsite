@@ -1,5 +1,21 @@
 const Guest = require('../models/Guest');
 
+const getAllGuests = async (req, res) => {
+  try {
+    const guests = await Guest.findAll({
+      order: [['createdAt', 'DESC']]
+    });
+    
+    res.json(guests);
+  } catch (error) {
+    console.error('Ошибка получения гостей:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Ошибка сервера'
+    });
+  }
+};
+
 module.exports = {
   // Создание гостя
   async createGuest(req, res) {
@@ -99,6 +115,45 @@ module.exports = {
       res.status(500).json({
         success: false,
         error: 'Ошибка при получении списка гостей'
+      });
+    }
+  },
+
+  // Удаление гостя (ДОБАВЬ ЭТОТ МЕТОД!)
+  async deleteGuest(req, res) {
+    try {
+      const { id } = req.params;
+      console.log('🗑️ Запрос на удаление гостя ID:', id);
+
+      // Ищем гостя
+      const guest = await Guest.findByPk(id);
+      
+      if (!guest) {
+        return res.status(404).json({
+          success: false,
+          error: 'Гость не найден'
+        });
+      }
+
+      // Сохраняем имя для сообщения
+      const guestName = guest.name;
+      
+      // Удаляем гостя
+      await guest.destroy();
+
+      console.log(`✅ Гость "${guestName}" удален`);
+
+      res.json({
+        success: true,
+        message: `Гость "${guestName}" успешно удален`
+      });
+
+    } catch (error) {
+      console.error('❌ Ошибка удаления гостя:', error);
+      
+      res.status(500).json({
+        success: false,
+        error: 'Ошибка удаления гостя'
       });
     }
   }

@@ -1,4 +1,4 @@
-const  initializeDatabase = require('./src/config/database.init');
+const initializeDatabase = require('./src/config/database.init');
 const app = require('./app')
 require('dotenv').config();
 
@@ -10,15 +10,16 @@ const startServer = async () => {
     await initializeDatabase();
 
     app.listen(PORT, () => {
-      console.log(`🚀 Сервер запущен на порту ${PORT}`);
-      console.log(`🌐 Основной сайт: http://localhost:${PORT}`);
-      console.log(`🔐 API администратора: http://localhost:${PORT}/admin`);
-      console.log(`📊 Получить всех гостей: GET http://localhost:${PORT}/admin/guests`);
-      console.log(`🔑 Войти как администратор: POST http://localhost:${PORT}/admin/login`);
-      console.log(`📝 Создать гостя: POST http://localhost:${PORT}/api/guests/create`);
+      console.log(`✅ Сервер запущен на http://localhost:${PORT}`);
+      console.log(`📌 API эндпоинты:`);
+      console.log(`   • POST   http://localhost:${PORT}/api/guests/create`);
+      console.log(`   • GET    http://localhost:${PORT}/api/guests`);
+      console.log(`   • DELETE http://localhost:${PORT}/api/guests/:id`);
+      console.log(`   • POST   http://localhost:${PORT}/api/admin/login`);
+      console.log(`\n🔐 Тестовый админ: admin / admin123`);
     });
   } catch (error) {
-    console.error('❌ Не удалось запустить сервер:', error);
+    console.error('❌ Ошибка запуска сервера:', error);
     process.exit(1);
   }
 };

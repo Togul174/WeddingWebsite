@@ -27,7 +27,7 @@ const adminController = {
         });
       }
 
-      // Проверяем пароль прямо здесь
+      // Проверяем пароль
       const isPasswordValid = await bcrypt.compare(password, admin.password);
       
       if (!isPasswordValid) {
@@ -96,7 +96,7 @@ const adminController = {
     }
   },
 
-  // Если нужно обновить пароль администратора
+  // Обновление пароля администратора
   updatePassword: async (req, res) => {
     try {
       if (!req.session.user) {
@@ -134,7 +134,7 @@ const adminController = {
         });
       }
 
-      // Хешируем новый пароль прямо здесь
+      // Хешируем новый пароль
       const hashedNewPassword = await bcrypt.hash(newPassword, 10);
       
       // Обновляем пароль
