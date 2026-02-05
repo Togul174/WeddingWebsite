@@ -2,12 +2,39 @@ const Admin = require('../models/Admin');
 const bcrypt = require('bcryptjs');
 
 const adminController = {
+  // Создание администратора по умолчанию
+  createDefaultAdmin: async () => {
+    try {
+      const adminExists = await Admin.findOne({ where: { login: 'admin' } });
+      
+      if (!adminExists) {
+        const hashedPassword = await bcrypt.hash('admin123', 10);
+        
+        await Admin.create({
+          login: 'admin',
+          password: hashedPassword,
+          role: 'admin'
+        });
+        
+        console.log('Администратор по умолчанию создан');
+        console.log('Логин: admin');
+        console.log('Пароль: admin123');
+        return true;
+      } else {
+        console.log('Администратор уже существует');
+        return false;
+      }
+    } catch (error) {
+      console.error('Ошибка создания администратора:', error);
+      return false;
+    }
+  },
+
   // Вход в систему
   login: async (req, res) => {
     try {
       const { login, password } = req.body;
 
-      // Валидация
       if (!login || !password) {
         return res.status(400).json({
           success: false,
@@ -15,10 +42,7 @@ const adminController = {
         });
       }
 
-      // Ищем администратора
-      const admin = await Admin.findOne({ 
-        where: { login } 
-      });
+      const admin = await Admin.findOne({ where: { login } });
       
       if (!admin) {
         return res.status(400).json({
@@ -27,7 +51,6 @@ const adminController = {
         });
       }
 
-      // Проверяем пароль
       const isPasswordValid = await bcrypt.compare(password, admin.password);
       
       if (!isPasswordValid) {
@@ -37,7 +60,6 @@ const adminController = {
         });
       }
 
-      // Создаем сессию
       req.session.user = {
         id: admin.id,
         login: admin.login,
@@ -124,7 +146,6 @@ const adminController = {
         });
       }
 
-      // Проверяем старый пароль
       const isOldPasswordValid = await bcrypt.compare(oldPassword, admin.password);
       
       if (!isOldPasswordValid) {
@@ -134,10 +155,8 @@ const adminController = {
         });
       }
 
-      // Хешируем новый пароль
       const hashedNewPassword = await bcrypt.hash(newPassword, 10);
       
-      // Обновляем пароль
       admin.password = hashedNewPassword;
       await admin.save();
 
@@ -148,6 +167,61 @@ const adminController = {
 
     } catch (error) {
       console.error('Ошибка обновления пароля:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Ошибка сервера'
+      });
+    }
+  },
+
+  // Дополнительные методы (опционально)
+  createAdmin: async (req, res) => {
+    try {
+      if (!req.session.user || req.session.user.role !== 'superadmin') {
+        return res.status(403).json({
+          success: false,
+          error: 'Доступ запрещен'
+        });
+      }
+
+      const { login, password, role } = req.body;
+      
+      if (!login || !password) {
+        return res.status(400).json({
+          success: false,
+          error: 'Логин и пароль обязательны'
+        });
+      }
+
+      const adminExists = await Admin.findOne({ where: { login } });
+      
+      if (adminExists) {
+        return res.status(400).json({
+          success: false,
+          error: 'Администратор с таким логином уже существует'
+        });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      
+      const newAdmin = await Admin.create({
+        login,
+        password: hashedPassword,
+        role: role || 'admin'
+      });
+
+      res.json({
+        success: true,
+        message: 'Администратор создан',
+        admin: {
+          id: newAdmin.id,
+          login: newAdmin.login,
+          role: newAdmin.role
+        }
+      });
+
+    } catch (error) {
+      console.error('Ошибка создания администратора:', error);
       res.status(500).json({
         success: false,
         error: 'Ошибка сервера'
