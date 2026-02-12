@@ -1,6 +1,38 @@
 import React from 'react';
 import '../css/AdminPage.css';
 
+const attendanceReverseMap = {
+  1: "ЗАГС",
+  2: "Ресторан",
+  3: "ЗАГС и Ресторан"
+};
+
+const transferReverseMap = {
+  1: "Да",
+  2: "Нет"
+};
+
+const hotDishReverseMap = {
+  1: "Мясо",
+  2: "Рыба",
+  3: "Вегетарианец"
+};
+
+const alcoholReverseMap = {
+  1: "Красное вино",
+  2: "Белое вино",
+  3: "Виски",
+  4: "Водка",
+  5: "Джин",
+  6: "Не буду употреблять алкоголь"
+};
+
+const nonAlcoholReverseMap = {
+  1: "Соки",
+  2: "Вода",
+  3: "Лимонады"
+};
+
 class AdminPage extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +43,7 @@ class AdminPage extends React.Component {
       guests: [],
       loading: false,
       error: '',
-      authLoading: true // Добавим состояние загрузки проверки авторизации
+      authLoading: true
     };
   }
 
@@ -25,24 +57,24 @@ class AdminPage extends React.Component {
         method: 'GET',
         credentials: 'include'
       });
-      
+
       if (response.ok) {
         const data = await response.json();
-        this.setState({ 
+        this.setState({
           isAuthenticated: true,
           authLoading: false
         }, () => {
           this.fetchGuests();
         });
       } else {
-        this.setState({ 
+        this.setState({
           isAuthenticated: false,
           authLoading: false
         });
       }
     } catch (error) {
       console.log('Не авторизован:', error);
-      this.setState({ 
+      this.setState({
         isAuthenticated: false,
         authLoading: false
       });
@@ -51,16 +83,16 @@ class AdminPage extends React.Component {
 
   handleLogin = async (e) => {
     e.preventDefault();
-    
+
     const { login, password } = this.state;
-    
+
     if (!login || !password) {
       this.setState({ error: 'Введите логин и пароль' });
       return;
     }
-    
+
     this.setState({ loading: true, error: '' });
-    
+
     try {
       const response = await fetch('http://localhost:3001/api/admin/login', {
         method: 'POST',
@@ -70,9 +102,9 @@ class AdminPage extends React.Component {
         body: JSON.stringify({ login, password }),
         credentials: 'include'
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         this.setState({
           isAuthenticated: true,
@@ -102,7 +134,7 @@ class AdminPage extends React.Component {
         method: 'POST',
         credentials: 'include'
       });
-      
+
       this.setState({
         isAuthenticated: false,
         guests: [],
@@ -120,10 +152,10 @@ class AdminPage extends React.Component {
         method: 'GET',
         credentials: 'include'
       });
-      
+
       if (!response.ok) {
         if (response.status === 401) {
-          this.setState({ 
+          this.setState({
             isAuthenticated: false,
             error: 'Требуется авторизация'
           });
@@ -131,33 +163,36 @@ class AdminPage extends React.Component {
         }
         throw new Error(`Ошибка загрузки: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
-      // Проверяем, что data существует и это массив
+
+      // Преобразуем полученные данные - заменяем числа на текст для отображения
+      let guestsData = [];
       if (data && Array.isArray(data)) {
-        this.setState({ 
-          guests: data,
-          error: ''
-        });
+        guestsData = data;
       } else if (data && data.guests && Array.isArray(data.guests)) {
-        // Если сервер возвращает объект {guests: [...]}
-        this.setState({ 
-          guests: data.guests,
-          error: ''
-        });
-      } else {
-        console.error('Некорректный формат данных:', data);
-        this.setState({ 
-          guests: [],
-          error: 'Некорректный формат данных от сервера'
-        });
+        guestsData = data.guests;
       }
+
+      // Преобразуем числовые значения в текст для отображения
+      const formattedGuests = guestsData.map(guest => ({
+        ...guest,
+        attendance: attendanceReverseMap[guest.attendance] || 'Не указано',
+        transferNeeded: transferReverseMap[guest.transferNeeded] || 'Не указано',
+        hotDish: hotDishReverseMap[guest.hotDish] || 'Не указано',
+        alcohol: alcoholReverseMap[guest.alcohol] || 'Не указано',
+        nonAlcohol: nonAlcoholReverseMap[guest.nonAlcohol] || 'Не указано'
+      }));
+
+      this.setState({
+        guests: formattedGuests,
+        error: ''
+      });
     } catch (err) {
       console.error('Ошибка загрузки гостей:', err);
-      this.setState({ 
+      this.setState({
         guests: [],
-        error: 'Ошибка загрузки: ' + err.message 
+        error: 'Ошибка загрузки: ' + err.message
       });
     }
   };
@@ -166,13 +201,13 @@ class AdminPage extends React.Component {
     if (!window.confirm('Вы уверены, что хотите удалить этого гостя?')) {
       return;
     }
-    
+
     try {
       const response = await fetch(`http://localhost:3001/api/guests/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
-      
+
       if (response.ok) {
         this.fetchGuests();
       } else {
@@ -187,7 +222,7 @@ class AdminPage extends React.Component {
 
   renderLoginForm() {
     const { login, password, loading, error } = this.state;
-    
+
     return (
       <div className="admin-login-container">
         <div className="login-card">
@@ -215,26 +250,26 @@ class AdminPage extends React.Component {
                 disabled={loading}
               />
             </div>
-            
+
             {error && <div className="error-message">{error}</div>}
-            
-            <button 
-              type="submit" 
+
+            <button
+              type="submit"
               className="login-button"
               disabled={loading}
             >
               {loading ? '⏳ Вход...' : 'Войти'}
             </button>
           </form>
-          
+
           <div className="test-credentials">
             <h4>Тестовые данные:</h4>
             <p><strong>Логин:</strong> admin</p>
             <p><strong>Пароль:</strong> admin123</p>
           </div>
-          
-          <button 
-            onClick={() => window.history.back()} 
+
+          <button
+            onClick={() => window.history.back()}
             className="back-button"
           >
             ← Назад на сайт
@@ -246,15 +281,18 @@ class AdminPage extends React.Component {
 
   renderAdminPanel() {
     const { guests, error } = this.state;
-    
-    // Безопасное получение guests как массива
+
     const guestsArray = Array.isArray(guests) ? guests : [];
-    
-    // Статистика
+
+    // Статистика (проверяем attendance в текстовом формате)
     const totalGuests = guestsArray.length;
-    const attendingGuests = guestsArray.filter(g => g.attendance === 'yes').length;
-    const needingTransfer = guestsArray.filter(g => g.transferNeeded === 'yes').length;
-    
+    const attendingGuests = guestsArray.filter(g =>
+      g.attendance === 'ЗАГС' ||
+      g.attendance === 'Ресторан' ||
+      g.attendance === 'ЗАГС и Ресторан'
+    ).length;
+    const needingTransfer = guestsArray.filter(g => g.transferNeeded === 'Да').length;
+
     return (
       <div className="admin-container">
         {/* Заголовок */}
@@ -264,24 +302,24 @@ class AdminPage extends React.Component {
             <p>Управление списком гостей</p>
           </div>
           <div className="admin-controls">
-            <button 
-              onClick={this.fetchGuests} 
+            <button
+              onClick={this.fetchGuests}
               className="refresh-button"
             >
               🔄 Обновить
             </button>
-            <button 
-              onClick={this.handleLogout} 
+            <button
+              onClick={this.handleLogout}
               className="logout-button"
             >
               👋 Выйти
             </button>
           </div>
         </div>
-        
+
         {/* Сообщения об ошибках */}
         {error && <div className="error-message">{error}</div>}
-        
+
         {/* Статистика */}
         <div className="stats-grid">
           <div className="stat-card">
@@ -303,26 +341,26 @@ class AdminPage extends React.Component {
             <div className="stat-label">Процент присутствия</div>
           </div>
         </div>
-        
+
         {/* Таблица гостей */}
         <div className="guests-table-container">
           <div className="table-header">
             <h2>📋 Список гостей ({totalGuests})</h2>
-            <button 
-              onClick={this.fetchGuests} 
+            <button
+              onClick={this.fetchGuests}
               className="small-refresh"
             >
               ↻ Обновить список
             </button>
           </div>
-          
+
           {guestsArray.length === 0 ? (
             <div className="no-guests">
               <p>😔 Нет данных о гостях</p>
-              <button 
-                onClick={this.fetchGuests} 
+              <button
+                onClick={this.fetchGuests}
                 className="login-button"
-                style={{marginTop: '20px', maxWidth: '200px'}}
+                style={{ marginTop: '20px', maxWidth: '200px' }}
               >
                 Попробовать загрузить
               </button>
@@ -346,28 +384,39 @@ class AdminPage extends React.Component {
                 <tbody>
                   {guestsArray.map(guest => (
                     <tr key={guest.id || guest._id}>
-                      <td><strong>{guest.userName || 'Не указано'}</strong></td>
+                      <td><strong>{guest.userName || guest.name || 'Не указано'}</strong></td>
                       <td>{guest.phone || 'Не указано'}</td>
-                      <td className={guest.attendance === 'yes' ? 'attendance-yes' : 'attendance-no'}>
-                        {guest.attendance === 'yes' ? '✅ Да' : '❌ Нет'}
+                      <td className={
+                        guest.attendance === 'ЗАГС' ||
+                          guest.attendance === 'Ресторан' ||
+                          guest.attendance === 'ЗАГС и Ресторан'
+                          ? 'attendance-yes'
+                          : 'attendance-no'
+                      }>
+                        {guest.attendance === 'ЗАГС' ? '🏛️ ЗАГС' :
+                          guest.attendance === 'Ресторан' ? '🍽️ Ресторан' :
+                            guest.attendance === 'ЗАГС и Ресторан' ? '🏛️🍽️ Оба' :
+                              guest.attendance}
                       </td>
-                      <td className={guest.transferNeeded === 'yes' ? 'transfer-yes' : 'transfer-no'}>
-                        {guest.transferNeeded === 'yes' ? '🚗 Да' : '🚶 Нет'}
+                      <td className={guest.transferNeeded === 'Да' ? 'transfer-yes' : 'transfer-no'}>
+                        {guest.transferNeeded === 'Да' ? '🚗 Да' :
+                          guest.transferNeeded === 'Нет' ? '🚶 Нет' :
+                            guest.transferNeeded}
                       </td>
                       <td>{guest.hotDish || 'Не указано'}</td>
                       <td>{guest.alcohol || 'Не указано'}</td>
                       <td>{guest.nonAlcohol || 'Не указано'}</td>
                       <td>
-                        {guest.createdAt ? 
+                        {guest.createdAt ?
                           new Date(guest.createdAt).toLocaleDateString('ru-RU', {
                             day: '2-digit',
                             month: '2-digit',
                             year: 'numeric'
-                          }) : 
+                          }) :
                           'Не указано'}
                       </td>
                       <td>
-                        <button 
+                        <button
                           onClick={() => this.handleDeleteGuest(guest.id || guest._id)}
                           className="delete-button"
                         >
@@ -387,7 +436,7 @@ class AdminPage extends React.Component {
 
   render() {
     const { isAuthenticated, authLoading } = this.state;
-    
+
     // Показываем загрузку при проверке авторизации
     if (authLoading) {
       return (
@@ -397,7 +446,7 @@ class AdminPage extends React.Component {
         </div>
       );
     }
-    
+
     return (
       <div className="admin-page">
         {isAuthenticated ? this.renderAdminPanel() : this.renderLoginForm()}

@@ -1,6 +1,38 @@
 import React from 'react';
 import FormForUser from './FormForUser';
 
+const attendanceMap = {
+  "ЗАГС": 1,
+  "Ресторан": 2,
+  "ЗАГС и Ресторан": 3
+};
+
+const transferMap = {
+  "Да": 1,
+  "Нет": 2
+};
+
+const hotDishMap = {
+  "Мясо": 1,
+  "Рыба": 2,
+  "Вегетарианец": 3
+};
+
+const alcoholMap = {
+  "Красное вино": 1,
+  "Белое вино": 2,
+  "Виски": 3,
+  "Водка": 4,
+  "Джин": 5,
+  "Не буду употреблять алкоголь": 6
+};
+
+const nonAlcoholMap = {
+  "Соки": 1,
+  "Вода": 2,
+  "Лимонады": 3
+};
+
 class Acception extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +59,7 @@ class Acception extends React.Component {
   handleInputChange = (e) => {
     this.setState({ 
       [e.target.name]: e.target.value,
-      error: '' // очищаем ошибку при изменении
+      error: ''
     });
   };
 
@@ -51,7 +83,7 @@ class Acception extends React.Component {
     this.setState({ loading: true, error: '' });
 
     try {
-      // Отправляем данные на сервер
+      // Отправляем на сервер ЧИСЛА вместо строк
       const response = await fetch('http://localhost:3001/api/guests/create', {
         method: 'POST',
         headers: {
@@ -60,11 +92,11 @@ class Acception extends React.Component {
         body: JSON.stringify({
           userName,
           phone,
-          attendance,
-          transferNeeded,
-          hotDish,
-          alcohol,
-          nonAlcohol
+          attendance: attendanceMap[attendance],
+          transferNeeded: transferMap[transferNeeded],
+          hotDish: hotDishMap[hotDish],
+          alcohol: alcoholMap[alcohol],
+          nonAlcohol: nonAlcoholMap[nonAlcohol]
         })
       });
 

@@ -1,19 +1,36 @@
 const Guest = require('../models/Guest');
 
-const getAllGuests = async (req, res) => {
-  try {
-    const guests = await Guest.findAll({
-      order: [['createdAt', 'DESC']]
-    });
-    
-    res.json(guests);
-  } catch (error) {
-    console.error('Ошибка получения гостей:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Ошибка сервера'
-    });
-  }
+// Словари для обратного преобразования (число -> текст) - для админки
+const attendanceReverseMap = {
+  1: "ЗАГС",
+  2: "Ресторан",
+  3: "ЗАГС и Ресторан"
+};
+
+const transferReverseMap = {
+  1: "Да",
+  2: "Нет"
+};
+
+const hotDishReverseMap = {
+  1: "Мясо",
+  2: "Рыба",
+  3: "Вегетарианец"
+};
+
+const alcoholReverseMap = {
+  1: "Красное вино",
+  2: "Белое вино",
+  3: "Виски",
+  4: "Водка",
+  5: "Джин",
+  6: "Не буду употреблять алкоголь"
+};
+
+const nonAlcoholReverseMap = {
+  1: "Соки",
+  2: "Вода",
+  3: "Лимонады"
 };
 
 module.exports = {
@@ -53,11 +70,11 @@ module.exports = {
       const guest = await Guest.create({
         name: userName.trim(),
         phone: phone.trim(),
-        attendance: attendance || '',
-        transferNeeded: transferNeeded || '',
-        hotDish: hotDish || '',
-        alcohol: alcohol || '',
-        nonAlcohol: nonAlcohol || ''
+        attendance: attendance, 
+        transferNeeded: transferNeeded, 
+        hotDish: hotDish,
+        alcohol: alcohol,
+        nonAlcohol: nonAlcohol
       });
 
       console.log('✅ Гость создан:', guest.name);
@@ -94,18 +111,19 @@ module.exports = {
         order: [['createdAt', 'DESC']]
       });
 
+      // Возвращаем числа, преобразование будет на фронтенде
       res.json({
         success: true,
         count: guests.length,
         guests: guests.map(guest => ({
           id: guest.id,
-          name: guest.name,
+          userName: guest.name, 
           phone: guest.phone,
-          attendance: guest.attendance,
-          transferNeeded: guest.transferNeeded,
+          attendance: guest.attendance, 
+          transferNeeded: guest.transferNeeded, 
           hotDish: guest.hotDish,
-          alcohol: guest.alcohol,
-          nonAlcohol: guest.nonAlcohol,
+          alcohol: guest.alcohol, 
+          nonAlcohol: guest.nonAlcohol, 
           createdAt: guest.createdAt
         }))
       });
@@ -119,7 +137,41 @@ module.exports = {
     }
   },
 
-  // Удаление гостя (ДОБАВЬ ЭТОТ МЕТОД!)
+  async getAllGuestsFormatted(req, res) {
+    try {
+      const guests = await Guest.findAll({
+        order: [['createdAt', 'DESC']]
+      });
+
+      // Преобразуем числа в текст прямо на бэкенде
+      const formattedGuests = guests.map(guest => ({
+        id: guest.id,
+        userName: guest.name,
+        phone: guest.phone,
+        attendance: attendanceReverseMap[guest.attendance] || 'Не указано',
+        transferNeeded: transferReverseMap[guest.transferNeeded] || 'Не указано',
+        hotDish: hotDishReverseMap[guest.hotDish] || 'Не указано',
+        alcohol: alcoholReverseMap[guest.alcohol] || 'Не указано',
+        nonAlcohol: nonAlcoholReverseMap[guest.nonAlcohol] || 'Не указано',
+        createdAt: guest.createdAt
+      }));
+
+      res.json({
+        success: true,
+        count: guests.length,
+        guests: formattedGuests
+      });
+
+    } catch (error) {
+      console.error('Ошибка при получении гостей:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Ошибка при получении списка гостей'
+      });
+    }
+  },
+
+  // Удаление гостя 
   async deleteGuest(req, res) {
     try {
       const { id } = req.params;
