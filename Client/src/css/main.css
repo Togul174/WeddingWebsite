@@ -160,7 +160,7 @@ html {
 
 .titleRepeatText {
     width: 60%;
-    margin: 1rem auto;
+    margin: 3rem auto;
     text-align: center;
     line-height: 2rem;
     font-size: 1.8rem;
@@ -239,23 +239,23 @@ html {
 }
 
 .color1 {
-    background-color: #4B3327;
+    background-color: #5D4636;
 }
 
 .color2 {
-    background-color: #75523F;
+    background-color: #856A57;
 }
 
 .color3 {
-    background-color: #C29995;
+    background-color: #E1D3C6;
 }
 
 .color4 {
-    background-color: #ECC9C7;
+    background-color: #AEBEA4;
 }
 
 .color5 {
-    background-color: rgb(255, 237, 212);
+    background-color: #5E6845;
 }
 
 .timetable {
@@ -263,7 +263,7 @@ html {
     text-align: center;
     margin: 6rem auto;
     padding: 1.5rem 0;
-    background-color: #b4b4b4;
+    background-color: #d3d4d4;
 }
 
 .wedTimetable {
@@ -348,21 +348,6 @@ html {
     margin: 2rem auto 4rem auto;
 }
 
-.confirmationButton {
-    height: 5vh;
-    width: 40%;
-    text-align: center;
-    margin: 5rem auto;
-    border-radius: 1rem;
-    font-size: 2rem;
-    background-color: #f00000;
-}
-
-.confirmationButton:hover {
-    background-color: rgb(235, 176, 232);
-    transition: .5s;
-}
-
 .formBackground {
     width: 80%;
     text-align: center;
@@ -393,6 +378,7 @@ html {
     display: flex;
     justify-content: center;
     text-align: center;
+    align-items: center;
     margin: 2rem auto;
     border-radius: 1rem;
     font-size: 1.5rem;
