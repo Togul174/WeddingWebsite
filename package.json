@@ -9,6 +9,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "npm install && cd Client && npm install",
+    "build-client": "cd Client && npm run build",
     "init": "start /b nodemon src/index.js && timeout /t 5 && cd Client && start npm start"
   },
   "keywords": [],

@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/AdminPage.css';
+import API_BASE_URL from '../config/api';
 
 const attendanceReverseMap = {
   1: "ЗАГС",
@@ -53,7 +54,7 @@ class AdminPage extends React.Component {
 
   checkAuth = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/admin/profile', {
+      const response = await fetch(`${API_BASE_URL}/admin/profile`, {
         method: 'GET',
         credentials: 'include'
       });
@@ -94,7 +95,7 @@ class AdminPage extends React.Component {
     this.setState({ loading: true, error: '' });
 
     try {
-      const response = await fetch('http://localhost:3001/api/admin/login', {
+      const response = await fetch(`${API_BASE_URL}/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +131,7 @@ class AdminPage extends React.Component {
 
   handleLogout = async () => {
     try {
-      await fetch('http://localhost:3001/api/admin/logout', {
+      await fetch(`${API_BASE_URL}/admin/logout`, {
         method: 'POST',
         credentials: 'include'
       });
@@ -148,7 +149,7 @@ class AdminPage extends React.Component {
 
   fetchGuests = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/guests', {
+      const response = await fetch(`${API_BASE_URL}/guests`, {
         method: 'GET',
         credentials: 'include'
       });
@@ -203,7 +204,7 @@ class AdminPage extends React.Component {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/api/guests/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/guests/${id}`, { 
         method: 'DELETE',
         credentials: 'include'
       });

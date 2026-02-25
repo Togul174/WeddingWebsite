@@ -1,5 +1,6 @@
 import React from 'react';
 import FormForUser from './FormForUser';
+import API_BASE_URL from '../config/api';
 
 const attendanceMap = {
   "ЗАГС": 1,
@@ -84,7 +85,7 @@ class Acception extends React.Component {
 
     try {
       // Отправляем на сервер ЧИСЛА вместо строк
-      const response = await fetch('http://localhost:3001/api/guests/create', {
+      const response = await fetch(`${API_BASE_URL}/guests/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
