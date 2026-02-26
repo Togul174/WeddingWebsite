@@ -230,8 +230,6 @@ html {
 }
 
 .colorScheme div {
-    min-width: 1rem;
-    min-height: 1rem;
     width: 5vw;
     height: 5vw;
     border-radius: 50%;
@@ -484,6 +482,11 @@ html {
         gap: 5%;
     }
 
+    .colorScheme div {
+        width: 8vw;
+        height: 8vw;
+    }
+
     .wedTimetable {
         font-size: 11rem;
     }
@@ -561,6 +564,12 @@ html {
 
     .timetable {
         width: 90%;
+    }
+
+    .colorScheme div {
+        width: 11vw;
+        height: 11vw;
+        margin: 0 .2rem;
     }
 
     .yandexMap {
