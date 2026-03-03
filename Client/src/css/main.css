@@ -377,6 +377,7 @@ html {
     justify-content: center;
     text-align: center;
     align-items: center;
+    text-decoration: none;
     margin: 2rem auto;
     border-radius: 1rem;
     font-size: 1.5rem;
